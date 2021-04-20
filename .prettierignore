@@ -1,0 +1,12 @@
+package.json
+.next
+.idea
+node_modules
+.env.local
+.eslintignore
+.eslintrc.js
+.gitignore
+next.config.js
+tsconfig.json
+.deploy/app_cloudformation.yml
+.deploy/app_cloudformation_template_variables.json

@@ -1,0 +1,12 @@
+public
+node_modules
+.next
+.idea
+.eslintrc.js
+.prettierrc.js
+README.md
+package-lock.json
+package.json
+tsconfig.json
+**/cypress
+cypress.json
