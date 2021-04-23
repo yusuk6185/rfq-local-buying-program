@@ -1,0 +1,77 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# IFN711
+            
+
+
+
+## Suppliers [/suppliers]
+
+### Current Suppliers [GET]
+
++ Response 200 
+
+        [
+            {   [
+                    {
+                        "ID": 1,
+                        "SupplierName": "Metal Supply Co"
+                        "Location": "Queensland"
+                        "ABN": "920 028 129"
+                        "Logo": "Metals"
+                    }, {
+                        "ID": 2,
+                        "SupplierName": "Buzz Mechanics"
+                        "Location": "Queensland"
+                        "ABN": "920 027 129"
+                        "Logo": "Buzzs"
+                    }, {
+                        "ID": 3,
+                        "SupplierName": "Tools Today"
+                        "Location": "Western Australia"
+                        "ABN": "920 026 129"
+                        "Logo": "Tools"
+                    }, {
+                        "ID": 4,
+                        "SupplierName": "COGS"
+                        "Location": "Victoria"
+                        "ABN": "920 025 129"
+                        "Logo": "COGSs"
+                    }
+                ]
+            }
+        ]
+
+
+## Proposals [/proposals]
+
+### Current Proposals [GET]
+
++ Response 200 
+
+
+            {   [
+                    {
+                        "ProposalID": 1,
+                        "SupplierName": "Metal Supply Co"
+                        "OfferPrice": "5800.00",
+                        "TenderName": "Create metal sheets"
+                    }, {
+                        "ProposalID": 2,
+                        "SupplierName": "Buzz Mechanics"
+                        "OfferPrice": "6500.00",
+                        "TenderName": "Create metal sheets"
+                    }, {
+                        "ProposalID": 3,
+                        "SupplierName": "Tools Today"
+                        "OfferPrice": "6000.00",
+                        "TenderName": "Create metal sheets"
+                    }, {
+                        "ProposalID": 4,
+                        "SupplierName": "COGS"
+                        "OfferPrice": "6600.00",
+                        "TenderName": "Create metal sheets"
+                    }
+                ]
+            }
