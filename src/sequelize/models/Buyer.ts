@@ -17,7 +17,7 @@ export type BuyerStatic = typeof Model & {
 };
 
 export function BuyerFactory(sequelize: Sequelize): BuyerStatic {
-  return <BuyerStatic>sequelize.define('user', {
+  return <BuyerStatic>sequelize.define('Buyer', {
     ID: {
       allowNull: false,
       type: DataTypes.INTEGER,

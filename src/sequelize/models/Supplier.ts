@@ -19,7 +19,7 @@ export type SupplierStatic = typeof Model & {
 };
 
 export function SupplierFactory(sequelize: Sequelize): SupplierStatic {
-  return <SupplierStatic>sequelize.define('user', {
+  return <SupplierStatic>sequelize.define('Supplier', {
     ID: {
       allowNull: false,
       type: DataTypes.INTEGER,

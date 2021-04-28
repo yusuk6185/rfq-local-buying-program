@@ -13,7 +13,7 @@ export type StateStatic = typeof Model & {
 };
 
 export function StateFactory(sequelize: Sequelize): StateStatic {
-  return <StateStatic>sequelize.define('user', {
+  return <StateStatic>sequelize.define('State', {
     ID: {
       allowNull: false,
       type: DataTypes.INTEGER,

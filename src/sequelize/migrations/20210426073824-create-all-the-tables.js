@@ -37,6 +37,16 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
           },
+          State_ID: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+              model: 'State',
+              key: 'ID',
+            },
+            onUpdate: 'cascade',
+            onDelete: 'cascade',
+          },
         },
         { transaction },
       );
@@ -59,6 +69,26 @@ module.exports = {
           Logo: {
             type: Sequelize.STRING,
             allowNull: false,
+          },
+          State_ID: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+              model: 'State',
+              key: 'ID',
+            },
+            onUpdate: 'cascade',
+            onDelete: 'cascade',
+          },
+          City_ID: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: {
+              model: 'City',
+              key: 'ID',
+            },
+            onUpdate: 'cascade',
+            onDelete: 'cascade',
           },
           CreatedAt: {
             type: Sequelize.DATE,
@@ -173,7 +203,15 @@ module.exports = {
             allowNull: false,
           },
           Description: {
+            type: Sequelize.TEXT,
+            allowNull: false,
+          },
+          Title: {
             type: Sequelize.STRING,
+            allowNull: false,
+          },
+          HeadingImage: {
+            type: Sequelize.TEXT,
             allowNull: false,
           },
           State_ID: {
