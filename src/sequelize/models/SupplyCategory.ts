@@ -21,7 +21,7 @@ export type SupplyCategoryStatic = typeof Model & {
 export function SupplyCategoryFactory(
   sequelize: Sequelize,
 ): SupplyCategoryStatic {
-  return <SupplyCategoryStatic>sequelize.define('user', {
+  return <SupplyCategoryStatic>sequelize.define('SupplyCategory', {
     ID: {
       allowNull: false,
       type: DataTypes.INTEGER,

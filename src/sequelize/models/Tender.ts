@@ -16,6 +16,7 @@ export interface TenderAttributes {
 export interface TenderModel
   extends Model<TenderAttributes>,
     TenderAttributes {}
+
 export class Tender extends Model<TenderModel, TenderAttributes> {}
 
 export type TenderStatic = typeof Model & {
