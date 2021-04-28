@@ -7,6 +7,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 
 import { motion } from 'framer-motion';
 
+import NaviBar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import SupplierDetailCard from 'components/TenderDetailCard/SupplierDetailCard';
 import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
@@ -160,6 +161,9 @@ const HomePage: FC<IProps> = ({
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
+          <SectionWithContainer>
+            <NaviBar />
+          </SectionWithContainer>
           <SectionWithContainer>
             <div className="d-flex flex-column align-items-center mb-3">
               <h1 className="text-center">
