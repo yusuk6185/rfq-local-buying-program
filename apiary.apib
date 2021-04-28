@@ -2,7 +2,8 @@ FORMAT: 1A
 HOST: https://polls.apiblueprint.org/
 
 # IFN711
-            
+
+Polls is a simple API allowing consumers to view polls and vote in them.
 
 
 
@@ -10,68 +11,505 @@ HOST: https://polls.apiblueprint.org/
 
 ### Current Suppliers [GET]
 
-+ Response 200 
++ Response 200 (application/json)
 
-        [
-            {   [
+                [
                     {
-                        "ID": 1,
-                        "SupplierName": "Metal Supply Co"
-                        "Location": "Queensland"
-                        "ABN": "920 028 129"
-                        "Logo": "Metals"
+                        "SupplierID": 1,
+                        "supplier": 
+                        {
+                        "name": "Metal Supply Co",
+                        "ABN": "02 999 111 888",
+                        "Logo": "Legoo",
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }},
+                     {
+                        "SupplierID": 2,
+                        "supplier": 
+                        {
+                        "name": "COGS",
+                        "ABN": "98 669 677 128",
+                        "Logo": "Gear",
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }},
+                    {
+                        "SupplierID": 3,
+                        "supplier": 
+                        {
+                        "name": "Tools 4 days",
+                        "ABN": "02 999 111 888",
+                        "Logo": "Tool",
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }]}
+                    {
+                        "SupplierID": 4,
+                        "supplier": [
+                        {
+                        "name": "Fall ball",
+                        "ABN": "12 929 121 828",
+                        "Logo": "Ball",
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }
+                    }
+                ]
+
+### Create a New Supplier [POST]
+
+
++ Request (application/json)
+
+        {
+            "question": "New supplier",
+            "supplier": [
+                "name",
+                "ABN",
+                "Logo"
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /supplier/2
+
+    + Body
+
+            {
+                "question": "New supplier",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "choices": [
+                    {
+                        "supplier": "Swift",
+                        "ABN": 12 222 222 333,
+                        "Logo": "PHHSK"
                     }, {
-                        "ID": 2,
-                        "SupplierName": "Buzz Mechanics"
-                        "Location": "Queensland"
-                        "ABN": "920 027 129"
-                        "Logo": "Buzzs"
-                    }, {
-                        "ID": 3,
-                        "SupplierName": "Tools Today"
-                        "Location": "Western Australia"
-                        "ABN": "920 026 129"
-                        "Logo": "Tools"
-                    }, {
-                        "ID": 4,
-                        "SupplierName": "COGS"
-                        "Location": "Victoria"
-                        "ABN": "920 025 129"
-                        "Logo": "COGSs"
+                        "supplier": "Ssact",
+                        "ABN": 12 999 111 333,
+                        "Logo": "PHHSK"
                     }
                 ]
             }
+
+ 
+ 
+## Tenders [/tenders]
+
+### Current Tenders [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "TenderID": 1,
+                "BuyerID": 1,
+                "tender": [
+                {
+                    "PublishedAt": "2021-04-25T11:55:34Z",
+                    "ClosingAt": "2021-04-25T11:55:34Z",
+                    "Description": "Create metal sheets",
+                    "State_ID": 1,
+                    "City_ID": 2,
+                    "Offer": 6000.00,
+                    "DeletedAt":"2021-04-25T11:55:34Z" ,
+                    "CreatedAt": "2021-04-25T11:55:34Z", 
+                    "UpdatedAt": "Monday",
+                }]},
+                {
+                "TenderID": 2,
+                "BuyerID": 2,
+                "tender": [
+                {
+                    "PublishedAt": "2021-04-25T11:55:34Z",
+                    "ClosingAt": "2021-04-25T11:55:34Z",
+                    "Description": "Create metal sheets",
+                    "State_ID": 2,
+                    "City_ID": 1,
+                    "Offer": 6000.00,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z", 
+                    "UpdatedAt": "TUesday",
+                }]},                
+                {
+                "TenderID": 3,
+                "BuyerID": 2,
+                "tender": [
+                {
+                    "PublishedAt": "2021-04-25T11:55:34Z",
+                    "ClosingAt": "2021-04-25T11:55:34Z",
+                    "Description": "Create metal sheets",
+                    "State_ID": 2,
+                    "City_ID": 3,
+                    "Offer": 6000.00,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z", 
+                    "UpdatedAt": "Friday",
+                }]},                                
+                {
+                "TenderID": 4,
+                "BuyerID": 3,
+                "tender": [
+                {
+                    "PublishedAt": "2021-04-25T11:55:34Z",
+                    "ClosingAt": "2021-04-25T11:55:34Z",
+                    "Description": "Create metal sheets",
+                    "State_ID": 3,
+                    "City_ID": 4,
+                    "Offer": 6000.00,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z", 
+                    "UpdatedAt": "Wednesday",
+                }]
+            }                  
         ]
 
+### Add tender [POST]
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /tenders/2
+
+    + Body
+
+            {
+                "question": "Add tender",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "tender": [
+                    {
+                    "TenderID": 1,
+                    "BuyerID": 2,
+                    "Description": "Beat metal",
+                    "State_ID": 4,
+                    "City_ID": 3,
+                    "Offer": 5000.00
+                    }, {
+                    "TenderID": 6,
+                    "BuyerID": 3,
+                    "Description": "Make some pipes",
+                    "State_ID": 1,
+                    "City_ID": 3,
+                    "Offer": 5023.00
+                    }
+                ]
+            }
+            
+## Buyers [/buyers]
+
+### Current Buyers [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "buyer": [
+                {
+                    "Name": "BHP",
+                    "ABN": "26 125 643 045",
+                    "Logo": "BHP",
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z"
+                    }],            
+                "BuyerID": 1
+                },
+             {
+                "buyer": [
+                {
+                    "Name": "BMC",
+                    "ABN": "77 123 765 890",
+                    "Logo": "BMC",
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z"
+                    }],            
+                "BuyerID": 2
+                },    
+             {
+                "buyer": [
+                {
+                    "Name": "BMA",
+                    "ABN": "58 566 908 203",
+                    "Logo": "BMA",
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z"
+                    }],            
+                "BuyerID": 3
+                }            
+        ]
+
+### Create a New Buyer [POST]
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /Buyers/2
+
+    + Body
+
+            {
+                "question": "New Buyer",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "buyer": [
+                    {
+                        "Name": "smashers",
+                        "ABN": "61 882 999 855",
+                        "Logo": "pem.png"
+                    }, {
+                        "Name": "Toolbox",
+                        "ABN": "21 222 311 556",
+                        "Logo": "tool.png"
+                    }, {
+                        "Name": "Drillbit",
+                        "ABN": "88 788 311 765",
+                        "Logo": "drill.png"
+                    }, {
+                        "Name": "Hammer",
+                        "ABN": "46 234 567 692",
+                        "Logo": "hammer.png"
+                    }
+                ]
+            }
+
+
+## Profile [/profile]
+
+### Current Profiles [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "UserID": 1
+                "user": 
+                {
+                    "Name": "BHP",
+                    "email": "bhp@test.com",
+                    "password": "BHP1234",
+                    "BuyerID": 1,
+                    "SupplierID": ,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "Asi120Ke",
+                    "refreshToken": "asdasaccAE"
+                    }},      
+            {
+                "UserID": 2
+                "user": 
+                {
+                    "Name": "BMC",
+                    "email": "bmc@test.com",
+                    "password": "Bmcasaa",
+                    "BuyerID": 2,
+                    "SupplierID": ,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "sdawqssi120Ke",
+                    "refreshToken": "pe03accAE"
+                    }},       
+            {
+                "UserID": 3
+                "user": 
+                {
+                    "Name": "BMA",
+                    "email": "bma@test.com",
+                    "password": "AMMSAKa",
+                    "BuyerID": 3,
+                    "SupplierID": ,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "ppweo1223",
+                    "refreshToken": "asxxxx"
+                    }}, 
+            {
+                "UserID": 4
+                "user": 
+                {
+                    "Name": "Metal Supply Co",
+                    "email": "MetalSupplyCo@test.com",
+                    "password": "APPPPOEEEEK",
+                    "BuyerID": ,
+                    "SupplierID": 1,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "21230slsls",
+                    "refreshToken": "112accAE"
+                    }},    
+            {
+                "UserID": 5
+                "user": 
+                {
+                    "Name": "COGS",
+                    "email": "COGS@test.com",
+                    "password": "as22212EK",
+                    "BuyerID": ,
+                    "SupplierID": 2,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "sdsagccccxs",
+                    "refreshToken": "1sadddddE"
+                    }},    
+            {
+                "UserID": 6
+                "user": 
+                {
+                    "Name": "Tools 4 days",
+                    "email": "T4d@test.com",
+                    "password": "pppsaaaa7652",
+                    "BuyerID": ,
+                    "SupplierID": 3,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "pasqnwla;",
+                    "refreshToken": "w1903901m,a"
+                    }},    
+            {
+                "UserID": 7
+                "user": 
+                {
+                    "Name": "Fall ball",
+                    "email": "ball@test.com",
+                    "password": "PAwqmqwmasd",
+                    "BuyerID": ,
+                    "SupplierID": 4,
+                    "DeletedAt": "2021-04-25T11:55:34Z",
+                    "CreatedAt": "2021-04-25T11:55:34Z",
+                    "UpdatedAt": "2021-04-25T11:55:34Z",
+                    "Token": "gyy;",
+                    "refreshToken": "cdsdfq"
+                    }
+            }   
+        ]
 
 ## Proposals [/proposals]
 
-### Current Proposals [GET]
+### Currents Proposals [GET]
 
-+ Response 200 
++ Response 200 (application/json)
 
+                [
+                    {
+                        "PropsalID": 1,
+                        "TenderID": 1,
+                        "SupplierID": 1,
+                        "proposal": [
+                        {
+                        "Description": "Make the sheet metal",
+                        "ApprovedAt": "2021-04-25T11:55:34Z",
+                        "Offer": 5500.00,
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }]},
+                    {
+                        "PropsalID": 2,
+                        "TenderID": 1,
+                        "SupplierID": 2,
+                        "proposal": [
+                        {
+                        "Description": "Mould sheet metal",
+                        "ApprovedAt": "2021-04-25T11:55:34Z",
+                        "Offer": 5459.00,
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }]},    
+                    {
+                        "PropsalID": 3,
+                        "TenderID": 1,
+                        "SupplierID": 4,
+                        "proposal": [
+                        {
+                        "Description": "Beat sheet metal",
+                        "ApprovedAt": "2021-04-25T11:55:34Z",
+                        "Offer": 5230.00,
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }]},        
+                        {
+                        "PropsalID": 4,
+                        "TenderID": 2
+                        "SupplierID": 1,
+                        "proposal": [
+                        {
+                        "Description": "Modify truck",
+                        "ApprovedAt": "2021-04-25T11:55:34Z",
+                        "Offer": 5500.00,
+                        "CreatedAt": "2021-04-25T11:55:34Z",
+                        "UpdatedAt": "2021-04-25T11:55:34Z",
+                        "DeletedAt": "2021-04-25T11:55:34Z"
+                        }]
+                    }        
+                ]
+                
+### Add proposal [POST]
 
-            {   [
++ Request (application/json)
+
+        {
+            "proposal": "What is your proposal?",
+            "ProposalID": [
+                1, 2, 3, 4, 5
+            ],
+            "TenderID": [
+                1,2,3,4,5
+            ], 
+            "SupplierID": [
+             1,2,3,4,5,6,7,8
+            ],
+            "offer": 
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /proposals/2
+
+    + Body
+
+            {
+                "question": "What is your proposal?",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "proposals": [
                     {
                         "ProposalID": 1,
-                        "SupplierName": "Metal Supply Co"
-                        "OfferPrice": "5800.00",
-                        "TenderName": "Create metal sheets"
-                    }, {
-                        "ProposalID": 2,
-                        "SupplierName": "Buzz Mechanics"
-                        "OfferPrice": "6500.00",
-                        "TenderName": "Create metal sheets"
-                    }, {
-                        "ProposalID": 3,
-                        "SupplierName": "Tools Today"
-                        "OfferPrice": "6000.00",
-                        "TenderName": "Create metal sheets"
+                        "TenderID": 1,
+                        "SupplierID": 2,
+                        "offer": 6656.00
                     }, {
                         "ProposalID": 4,
-                        "SupplierName": "COGS"
-                        "OfferPrice": "6600.00",
-                        "TenderName": "Create metal sheets"
+                        "TenderID": 2,
+                        "SupplierID": 2,
+                        "offer": 6441.00
+                    }, {
+                        "ProposalID": 1,
+                        "TenderID": 1,
+                        "SupplierID": 1,
+                        "offer": 6665.09
+                    }, {
+                        "ProposalID": 3,
+                        "TenderID": 3,
+                        "SupplierID": 3,
+                        "offer": 10000.00
                     }
                 ]
             }
