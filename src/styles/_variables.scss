@@ -21,7 +21,7 @@ $theme-colors: map-merge($theme-colors, (
 ));
 $link-color: $primary;
 $link-hover-color: darken($link-color, 15%) !default;
-$btn-border-width: 3px;
+$btn-border-width: 2px;
 $btn-font-weight: bold;
 $btn-padding-y: 0.6rem;
 $btn-padding-x: 1.7rem;
