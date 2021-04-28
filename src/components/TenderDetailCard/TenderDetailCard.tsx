@@ -1,18 +1,32 @@
-import { FC } from 'react';
+import { FC, HTMLProps, useMemo } from 'react';
 import { Badge, Col, Row } from 'react-bootstrap';
 
+import cx from 'classnames';
 import moment from 'moment';
 
 import { ITender } from 'models/ITender';
 
-interface IProps {
+interface IProps extends HTMLProps<HTMLDivElement> {
   tender: ITender;
 }
-const TenderDetailCard: FC<IProps> = ({ tender, ...props }) => {
+const TenderDetailCard: FC<IProps> = ({ tender, className, ...props }) => {
+  const isClosed = useMemo(() => {
+    return moment().startOf('day').isAfter(moment(tender.ClosingAt));
+  }, []);
+
   return (
-    <div className="d-flex flex-column" {...props}>
-      <div className="img position-relative">
-        <img src={tender.HeadingImage} alt={tender.Title} />
+    <div
+      className={cx('d-flex flex-column', className, {
+        'opacity-50': isClosed,
+      })}
+      {...props}
+    >
+      <div className="img position-relative mb-2">
+        <img
+          src={tender.HeadingImage}
+          alt={tender.Title}
+          className="radius-sm overflow-hidden"
+        />
         <div className="position-absolute p-2 left-0 bottom-0">
           {(tender.SupplyCategories || []).map(supplyCategory => (
             <Badge
