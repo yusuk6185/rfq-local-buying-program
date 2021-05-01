@@ -397,6 +397,41 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                     }
             }   
         ]
+        
+### Create a New Profile [POST]
+
++ Request (application/json)
+
+        {
+            "question": "Add User",
+            "Profiles": [
+                "UserID",
+                "BuyerID"
+                "SupplierID"
+            ]
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /Profiles/2
+
+ + Body
+
+            {
+                "question": "Add User",
+                "published_at": "2015-08-05T08:40:51.620Z",
+                "profiles": [
+                    {
+                        "UserID": 8,
+                        "BuyerID": 4,
+                    },{
+                        "UserID": 9,
+                        "SupplierID":5,
+                    }
+                ]
+            }
 
 ## Proposals [/proposals]
 
@@ -470,10 +505,10 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 1, 2, 3, 4, 5
             ],
             "TenderID": [
-                1,2,3,4,5
+                1, 2, 3, 4, 5
             ], 
             "SupplierID": [
-             1,2,3,4,5,6,7,8
+             1, 2, 3, 4, 5, 6, 7, 8
             ],
             "offer": 
         }
