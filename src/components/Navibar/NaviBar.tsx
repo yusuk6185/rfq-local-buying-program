@@ -7,7 +7,7 @@ const NaviBar: FC = () => {
   return (
     <Navbar fixed="top" bg="light" expand="lg" variant="light">
       <Container className={styles.container}>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             src="images/logo.jpg"
             className="d-inline-block align-top"
@@ -36,7 +36,7 @@ const NaviBar: FC = () => {
                 MANAGE TENDER
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">NEW TENDER</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Item href="tenders">Something</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.4">
                 Separated link

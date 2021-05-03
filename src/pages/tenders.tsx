@@ -2,19 +2,20 @@ import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FC, useMemo, useState } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
 
-import { motion } from 'framer-motion';
+import MainLayout from 'layouts/MainLayout';
 import moment from 'moment';
 import { $enum } from 'ts-enum-util';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
+import NavBar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { ITender } from 'models/ITender';
 
-import MainLayout from '../layouts/MainLayout';
+import styles from '../styles/tenders.module.css';
 
 interface IProps {
   statusCode?: number;
@@ -106,12 +107,35 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-const MyTendersPage: FC<IProps> = ({
-  tenders,
-  statusCode = null,
-  host = '',
-}) => {
+function SearchBar(props) {
+  const [innerSearch, setInnerSearch] = useState('');
+  return (
+    <div className={styles.searchbar}>
+      <input
+        aria-labelledby="search-button"
+        name="search"
+        id="search"
+        type="search"
+        placeholder="Tenders"
+        value={innerSearch}
+        onChange={e => setInnerSearch(e.target.value)}
+        className={styles.search}
+      />
+      <Button
+        className={styles.searchbtn}
+        onClick={() => props.onSubmit(innerSearch)}
+      >
+        Search
+      </Button>
+    </div>
+  );
+}
+
+const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
   const [tenderFilter, setTenderFilter] = useState<TenderState>();
+  const [search, setSearch] = useState('');
+  const [tenderss, setTenders] = useState([]);
+  const [searchedTender, setSearchedTender] = useState([]);
   const filteredTender = useMemo(() => {
     switch (tenderFilter) {
       case TenderState.closed:
@@ -128,6 +152,14 @@ const MyTendersPage: FC<IProps> = ({
         return tenders;
     }
   }, [tenderFilter, tenders]);
+
+  useEffect(() => {
+    setSearchedTender(
+      tenderss.filter((tender: ITender) =>
+        tender.Title.toLowerCase().includes(search.toLowerCase()),
+      ),
+    );
+  }, [search]);
 
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
@@ -147,44 +179,56 @@ const MyTendersPage: FC<IProps> = ({
         )}
       </Head>
       <MainLayout>
-        <motion.div
-          key="my-tenders"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 40 }}
-          transition={{ ease: 'easeInOut', duration: 0.3 }}
-        >
-          <SectionWithContainer>
-            <Row className="justify-content-between">
-              <Col md="auto">
-                <h1 className="mb-3">My Tenders</h1>
-              </Col>
-              <Col md="auto">
-                <ButtonGroup size="sm">
+        <SectionWithContainer>
+          <NavBar />
+        </SectionWithContainer>
+        <SectionWithContainer>
+          <h1>Tenders</h1>
+          <SectionWithContainer className="searchbarcontainer">
+            <img
+              src="images/tenders_bg.jpg"
+              alt="Office Background"
+              width="100%"
+              height="500px"
+            />
+            <div>
+              <SearchBar onSubmit={setSearch} onClick={setTenders} />
+            </div>
+          </SectionWithContainer>
+          <Row className="justify-content-between">
+            <Col md="auto">
+              <h1 className="mb-3">Tenders List</h1>
+            </Col>
+            <Col md="auto">
+              <ButtonGroup size="sm">
+                <Button
+                  onClick={() => setTenderFilter(undefined)}
+                  variant={
+                    tenderFilter === undefined ? undefined : 'outline-primary'
+                  }
+                >
+                  All
+                </Button>
+                {$enum(TenderState).map(value => (
                   <Button
-                    onClick={() => setTenderFilter(undefined)}
+                    onClick={() => setTenderFilter(value)}
+                    key={value}
                     variant={
-                      tenderFilter === undefined ? undefined : 'outline-primary'
+                      value === tenderFilter ? 'primary' : 'outline-primary'
                     }
                   >
-                    All
+                    {value}
                   </Button>
-                  {$enum(TenderState).map(value => (
-                    <Button
-                      onClick={() => setTenderFilter(value)}
-                      key={value}
-                      variant={
-                        value === tenderFilter ? 'primary' : 'outline-primary'
-                      }
-                    >
-                      {value}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              </Col>
-            </Row>
+                ))}
+              </ButtonGroup>
+            </Col>
+          </Row>
+          <Row>
+            {/* 
+          I want to show this when search is executed
+          */}
             <Row>
-              {filteredTender.map((tender: ITender) => (
+              {searchedTender.map((tender: ITender) => (
                 <Col key={tender.ID} md={3} className="mb-3">
                   <Link href={`/tenders/${tender.ID}`} passHref>
                     <Button
@@ -198,11 +242,24 @@ const MyTendersPage: FC<IProps> = ({
                 </Col>
               ))}
             </Row>
-          </SectionWithContainer>
-        </motion.div>
+            {filteredTender.map((tender: ITender) => (
+              <Col key={tender.ID} md={3} className="mb-3">
+                <Link href={`/tenders/${tender.ID}`} passHref>
+                  <Button
+                    variant="link"
+                    className="p-0 text-dark text-left radius-0"
+                    as="a"
+                  >
+                    <TenderDetailCard tender={tender} />
+                  </Button>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+        </SectionWithContainer>
       </MainLayout>
     </>
   );
 };
 
-export default MyTendersPage;
+export default TendersPage;
