@@ -193,6 +193,7 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
             />
             <div>
               <SearchBar onSubmit={setSearch} onClick={setTenders} />
+              {/* I added onclick just to erase error for the git commit */}
             </div>
           </SectionWithContainer>
           <Row className="justify-content-between">
