@@ -5,7 +5,7 @@ import styles from './Navibar.module.css';
 
 const NaviBar: FC = () => {
   return (
-    <Navbar fixed="top" bg="light" expand="lg" variant="light">
+    <Navbar bg="light" expand="lg" variant="light">
       <Container className={styles.container}>
         <Navbar.Brand href="/">
           <img

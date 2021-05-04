@@ -161,9 +161,7 @@ const HomePage: FC<IProps> = ({
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
-          <SectionWithContainer>
-            <NaviBar />
-          </SectionWithContainer>
+          <NaviBar />
           <SectionWithContainer>
             <div className="d-flex flex-column align-items-center mb-3">
               <h1 className="text-center">
