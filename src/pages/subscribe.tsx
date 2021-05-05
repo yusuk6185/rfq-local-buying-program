@@ -220,7 +220,7 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                 <Card>
                   <Card.Body>
                     <h1 className="mb-5">
-                      Subscribe as {type.toLocaleUpperCase()}
+                      Subscribe as {(type || '').toLocaleUpperCase()}
                     </h1>
                     {SubscribePageTypes.buyer === type ? (
                       <BuyerSubscribeForm />

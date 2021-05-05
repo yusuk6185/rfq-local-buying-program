@@ -74,7 +74,8 @@ export const getStaticProps: GetStaticProps = async () => {
         ID: 1,
         Name: 'Name',
         ABN: 'ABN',
-        Logo: 'Logo',
+        Logo:
+          'https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80',
         CreatedAt: '2020-08-01',
         UpdatedAt: '2020-08-01',
         DeletedAt: '2020-08-01',
@@ -208,7 +209,7 @@ const MyProposalsPage: FC<IProps> = ({
           <SectionWithContainer>
             <Row className="justify-content-between">
               <Col md="auto">
-                <h1 className="mb-3">My Tenders</h1>
+                <h1 className="mb-3">My Proposals</h1>
               </Col>
               <Col md="auto">
                 <ButtonGroup size="sm">
@@ -253,6 +254,7 @@ const MyProposalsPage: FC<IProps> = ({
                         <Link href={`/proposals/${proposal.ID}`} passHref>
                           <a className="d-flex align-items-center">
                             <img
+                              width={70}
                               className="mr-2 d-flex img-thumbnail"
                               src={proposal.Tender?.Buyer?.Logo}
                               alt={proposal.Tender?.Buyer?.Name}
