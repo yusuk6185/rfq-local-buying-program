@@ -169,10 +169,16 @@ const HomePage: FC<IProps> = ({
             </div>
             <Row className="justify-content-center">
               <Col md="auto">
-                <Button>Post a project</Button>
+                <Link href="/subscribe?type=buyer">
+                  <Button as="a">Subscribe as a Buyer</Button>
+                </Link>
               </Col>
               <Col md="auto">
-                <Button variant="success">Subscribe as a local business</Button>
+                <Link href="/subscribe?type=supplier">
+                  <Button variant="success">
+                    Subscribe as a Local Business
+                  </Button>
+                </Link>
               </Col>
             </Row>
           </SectionWithContainer>
