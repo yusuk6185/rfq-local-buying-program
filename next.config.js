@@ -129,6 +129,13 @@ module.exports = withPlugins( [withTM, withSourceMaps, withPWA], {
         } )
       );
     }
+    
+    config.module.rules.push({
+      // enable to load svg file
+      test: /\.svg$/,
+      use: ["@svgr/webpack"]
+    });
+
 
     config.plugins.push( new DuplicatePackageCheckerPlugin() );
     // Resolving duplicate packages

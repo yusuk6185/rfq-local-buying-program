@@ -84,6 +84,7 @@
     "webpack-bundle-analyzer": "^4.4.0"
   },
   "devDependencies": {
+    "@svgr/webpack": "^5.5.0",
     "@types/apicache": "^1.2.2",
     "@types/fingerprintjs2": "^2.0.0",
     "@types/jquery": "^3.5.5",
