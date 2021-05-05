@@ -14,7 +14,7 @@ import SectionWithContainer from 'components/SectionWithContainer/SectionWithCon
 import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { ITender } from 'models/ITender';
 
-import MainLayout from '../../layouts/MainLayout';
+import MainLayout from '../layouts/MainLayout';
 
 interface IProps {
   statusCode?: number;
@@ -106,7 +106,11 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
+const MyTendersPage: FC<IProps> = ({
+  tenders,
+  statusCode = null,
+  host = '',
+}) => {
   const [tenderFilter, setTenderFilter] = useState<TenderState>();
   const filteredTender = useMemo(() => {
     switch (tenderFilter) {
@@ -201,4 +205,4 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
   );
 };
 
-export default TendersPage;
+export default MyTendersPage;
