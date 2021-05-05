@@ -140,7 +140,7 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
                 <h1 className="mb-3">Tenders</h1>
               </Col>
             </Row>
-            <Row className="justify-content-md-center mt-5">
+            <Row className="justify-content-md-center mt-4">
               <h4 className="text-center">Looking for current tenders?</h4>
             </Row>
             <Row className="justify-content-md-center mt-3">
@@ -165,7 +165,10 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
                 <Button>Search</Button>
               </Col>
             </Row>
-            <Row className="mt-5">
+            <Row className="justify-content-md-center mt-5">
+              <h3 className="text-center">Open tenders</h3>
+            </Row>
+            <Row className="mt-2">
               {filteredTender.map((tender: ITender) => (
                 <Col key={tender.ID} md={3} className="mb-3">
                   <Link href={`/tenders/${tender.ID}`} passHref>
