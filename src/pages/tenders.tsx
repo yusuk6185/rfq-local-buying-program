@@ -2,30 +2,23 @@ import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FC, useState, useMemo, useEffect } from 'react';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+import { FC, useMemo, useState } from 'react';
+import { Button, Form, Col, Row } from 'react-bootstrap';
 
-import MainLayout from 'layouts/MainLayout';
-import moment from 'moment';
-import { $enum } from 'ts-enum-util';
+import { motion } from 'framer-motion';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
-import NavBar from 'components/Navibar/NaviBar';
+import Navbar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { ITender } from 'models/ITender';
 
-import styles from '../styles/tenders.module.css';
+import MainLayout from '../layouts/MainLayout';
 
 interface IProps {
   statusCode?: number;
   host: string;
   tenders: ITender[];
-}
-
-enum TenderState {
-  closed = 'Closed',
-  active = 'Active',
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -107,59 +100,13 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-function SearchBar(props) {
-  const [innerSearch, setInnerSearch] = useState('');
-  return (
-    <div className={styles.searchbar}>
-      <input
-        aria-labelledby="search-button"
-        name="search"
-        id="search"
-        type="search"
-        placeholder="Tenders"
-        value={innerSearch}
-        onChange={e => setInnerSearch(e.target.value)}
-        className={styles.search}
-      />
-      <Button
-        className={styles.searchbtn}
-        onClick={() => props.onSubmit(innerSearch)}
-      >
-        Search
-      </Button>
-    </div>
-  );
-}
-
 const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
-  const [tenderFilter, setTenderFilter] = useState<TenderState>();
-  const [search, setSearch] = useState('');
-  const [tenderss, setTenders] = useState([]);
-  const [searchedTender, setSearchedTender] = useState([]);
+  const [search, setSearch] = useState<string>('');
   const filteredTender = useMemo(() => {
-    switch (tenderFilter) {
-      case TenderState.closed:
-        return tenders.filter(tender => {
-          return moment().startOf('day').isAfter(moment(tender.ClosingAt));
-        });
-      case TenderState.active:
-        return tenders.filter(tender => {
-          return moment()
-            .startOf('day')
-            .isSameOrBefore(moment(tender.ClosingAt));
-        });
-      default:
-        return tenders;
-    }
-  }, [tenderFilter, tenders]);
-
-  useEffect(() => {
-    setSearchedTender(
-      tenderss.filter((tender: ITender) =>
-        tender.Title.toLowerCase().includes(search.toLowerCase()),
-      ),
-    );
-  }, [search]);
+    return tenders.filter(tender => {
+      return tender.Title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+    });
+  }, [search, tenders]);
 
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
@@ -179,57 +126,47 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
         )}
       </Head>
       <MainLayout>
-        <SectionWithContainer>
-          <NavBar />
-        </SectionWithContainer>
-        <SectionWithContainer>
-          <h1>Tenders</h1>
-          <SectionWithContainer className="searchbarcontainer">
-            <img
-              src="images/tenders_bg.jpg"
-              alt="Office Background"
-              width="100%"
-              height="500px"
-            />
-            <div>
-              <SearchBar onSubmit={setSearch} onClick={setTenders} />
-              {/* I added onclick just to erase error for the git commit */}
-            </div>
-          </SectionWithContainer>
-          <Row className="justify-content-between">
-            <Col md="auto">
-              <h1 className="mb-3">Tenders List</h1>
-            </Col>
-            <Col md="auto">
-              <ButtonGroup size="sm">
-                <Button
-                  onClick={() => setTenderFilter(undefined)}
-                  variant={
-                    tenderFilter === undefined ? undefined : 'outline-primary'
-                  }
-                >
-                  All
-                </Button>
-                {$enum(TenderState).map(value => (
-                  <Button
-                    onClick={() => setTenderFilter(value)}
-                    key={value}
-                    variant={
-                      value === tenderFilter ? 'primary' : 'outline-primary'
-                    }
-                  >
-                    {value}
-                  </Button>
-                ))}
-              </ButtonGroup>
-            </Col>
-          </Row>
-          <Row>
-            {/* 
-          I want to show this when search is executed
-          */}
-            <Row>
-              {searchedTender.map((tender: ITender) => (
+        <motion.div
+          key="my-tenders"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 40 }}
+          transition={{ ease: 'easeInOut', duration: 0.3 }}
+        >
+          <Navbar />
+          <SectionWithContainer>
+            <Row className="justify-content-between">
+              <Col md="auto">
+                <h1 className="mb-3">Tenders</h1>
+              </Col>
+            </Row>
+            <Row className="justify-content-md-center mt-5">
+              <h4 className="text-center">Looking for current tenders?</h4>
+            </Row>
+            <Row className="justify-content-md-center mt-3">
+              {/* I want to put searchbar in the center of this image */}
+              {/* <SectionWithContainer className="position-relative">
+                                <img
+                                    src="images/tenders_bg.jpg"
+                                    alt="Office Background"
+                                    width="100%"
+                                    height="500px"
+                                />
+                            </SectionWithContainer> */}
+              <Col lg="6">
+                <Form.Control
+                  value={search}
+                  onChange={({ target: { value } }) => {
+                    setSearch(value);
+                  }}
+                />
+              </Col>
+              <Col md="auto">
+                <Button>Search</Button>
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              {filteredTender.map((tender: ITender) => (
                 <Col key={tender.ID} md={3} className="mb-3">
                   <Link href={`/tenders/${tender.ID}`} passHref>
                     <Button
@@ -243,21 +180,8 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
                 </Col>
               ))}
             </Row>
-            {filteredTender.map((tender: ITender) => (
-              <Col key={tender.ID} md={3} className="mb-3">
-                <Link href={`/tenders/${tender.ID}`} passHref>
-                  <Button
-                    variant="link"
-                    className="p-0 text-dark text-left radius-0"
-                    as="a"
-                  >
-                    <TenderDetailCard tender={tender} />
-                  </Button>
-                </Link>
-              </Col>
-            ))}
-          </Row>
-        </SectionWithContainer>
+          </SectionWithContainer>
+        </motion.div>
       </MainLayout>
     </>
   );
