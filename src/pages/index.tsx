@@ -162,9 +162,6 @@ const HomePage: FC<IProps> = ({
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
           <SectionWithContainer>
-            <NaviBar />
-          </SectionWithContainer>
-          <SectionWithContainer>
             <div className="d-flex flex-column align-items-center mb-3">
               <h1 className="text-center">
                 Connecting local business to big companies
@@ -173,10 +170,16 @@ const HomePage: FC<IProps> = ({
             </div>
             <Row className="justify-content-center">
               <Col md="auto">
-                <Button>Post a project</Button>
+                <Link href="/subscribe?type=buyer">
+                  <Button as="a">Subscribe as a Buyer</Button>
+                </Link>
               </Col>
               <Col md="auto">
-                <Button variant="success">Subscribe as a local business</Button>
+                <Link href="/subscribe?type=supplier">
+                  <Button variant="success">
+                    Subscribe as a Local Business
+                  </Button>
+                </Link>
               </Col>
             </Row>
           </SectionWithContainer>
