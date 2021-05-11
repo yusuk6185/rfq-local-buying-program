@@ -20,6 +20,9 @@ module.exports = withPlugins( [withTM, withSourceMaps, withPWA], {
   future: {
     webpack5: true,
   },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
   pwa: {
     dest: 'public',
     disable: process.env.NODE_ENV === 'development',
@@ -129,7 +132,7 @@ module.exports = withPlugins( [withTM, withSourceMaps, withPWA], {
         } )
       );
     }
-    
+
     config.module.rules.push({
       // enable to load svg file
       test: /\.svg$/,
