@@ -10,7 +10,7 @@ import Navbar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import { ITender } from 'models/ITender';
 
-import MainLayout from '../layouts/MainLayout';
+import MainLayout from '../../../layouts/MainLayout';
 
 // import styles from 'styles/projectdetail.module.css';
 
