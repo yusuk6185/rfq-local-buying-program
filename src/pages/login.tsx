@@ -1,10 +1,12 @@
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
+import request from 'utils/request';
 
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import { ISupplier } from 'models/ISupplier';
@@ -21,10 +23,22 @@ interface IProps {
 }
 
 const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
+  const { register, handleSubmit } = useForm();
+  const [loading, setLoading] = useState(false);
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
 
+  const onSubmit = async (value: any) => {
+    setLoading(true);
+    try {
+      const response = await request.post('/login', value);
+      console.info(response);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
   return (
     <>
       <Head>
@@ -51,16 +65,25 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
               <Col className="offset-md-4" md={4}>
                 <Card>
                   <Card.Body className="p-4">
-                    <Form>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
                       <Form.Group>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control name="email" />
+                        <Form.Control {...register('email')} />
                       </Form.Group>
                       <Form.Group>
                         <Form.Label>Password</Form.Label>
-                        <Form.Control name="password" type="password" />
+                        <Form.Control
+                          {...register('password')}
+                          type="password"
+                        />
                       </Form.Group>
-                      <Button className="w-100 mt-3 mb-3">Login</Button>
+                      <Button
+                        type="submit"
+                        disabled={loading}
+                        className="w-100 mt-3 mb-3"
+                      >
+                        Login
+                      </Button>
                       <p className="text-center">
                         Don't you have an account? <br />
                         <Link href="/subscribe" passHref>

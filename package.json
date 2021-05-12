@@ -42,6 +42,7 @@
     "@sentry/webpack-plugin": "^1.15.0",
     "@zeit/next-source-maps": "0.0.4-canary.1",
     "apicache": "^1.6.2",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "classnames": "^2.3.1",
     "css-vars-ponyfill": "^2.4.3",

@@ -2,14 +2,16 @@ import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Button, Card, Col, Form, FormProps, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
 // eslint-disable-next-line import/no-unresolved
 import { Except } from 'type-fest';
+import request from 'utils/request';
 
+import FormControlFile from 'components/FormControlFile/FormControlFile';
 import FormGroupWithLabelAndControl from 'components/FormGroupWithLabelAndControl/FormGroupWithLabelAndControl';
 import FormGroupWithLabelAndSelect from 'components/FormGroupWithLabelAndSelect/FormGroupWithLabelAndSelect';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
@@ -21,7 +23,6 @@ import { ITender } from 'models/ITender';
 
 import MainLayout from '../layouts/MainLayout';
 import renderCommonMetaTags from '../utils/renderCommonMetaTags';
-import FormControlFile from 'components/FormControlFile/FormControlFile';
 
 interface IProps {
   statusCode?: number;
@@ -162,7 +163,7 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
   loading,
   ...props
 }) => {
-  const { register, handleSubmit, control} = useForm();
+  const { register, handleSubmit, control } = useForm();
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...props}>
       <FormGroupWithLabelAndControl
@@ -193,11 +194,24 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
 
 const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { query } = useRouter();
+  const [loading, setLoading] = useState(false);
   const type = query.type as SubscribePageTypes;
 
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
+
+  const onSubmit = async (value: any) => {
+    setLoading(true);
+    try {
+      const response = await request.post('/users', value);
+      console.info(response);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
   return (
     <>
       <Head>
@@ -228,9 +242,15 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                       Subscribe as {(type || '').toLocaleUpperCase()}
                     </h1>
                     {SubscribePageTypes.buyer === type ? (
-                      <BuyerSubscribeForm />
+                      <BuyerSubscribeForm
+                        loading={loading}
+                        onSubmit={onSubmit}
+                      />
                     ) : (
-                      <SupplierSubscribeForm />
+                      <SupplierSubscribeForm
+                        loading={loading}
+                        onSubmit={onSubmit}
+                      />
                     )}
                   </Card.Body>
                 </Card>
