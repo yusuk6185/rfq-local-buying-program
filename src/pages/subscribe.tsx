@@ -21,6 +21,7 @@ import { ITender } from 'models/ITender';
 
 import MainLayout from '../layouts/MainLayout';
 import renderCommonMetaTags from '../utils/renderCommonMetaTags';
+import FormControlFile from 'components/FormControlFile/FormControlFile';
 
 interface IProps {
   statusCode?: number;
@@ -85,12 +86,14 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
           type: 'number',
         }}
       />
-      <FormGroupWithLabelAndControl
-        label="Logo"
-        controlProps={{
-          ...register('Logo', { required: true }),
-        }}
-      />
+      <Form.Group>
+        <Form.Label>Logo</Form.Label>
+        <Controller
+          name="Logo"
+          control={control}
+          render={({ field }) => <FormControlFile {...field} />}
+        />
+      </Form.Group>
       <FormGroupWithLabelAndControl
         label="Description"
         controlProps={{
@@ -159,7 +162,7 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
   loading,
   ...props
 }) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, control} = useForm();
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...props}>
       <FormGroupWithLabelAndControl
@@ -173,12 +176,14 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
           type: 'number',
         }}
       />
-      <FormGroupWithLabelAndControl
-        label="Logo"
-        controlProps={{
-          ...register('Logo', { required: true }),
-        }}
-      />
+      <Form.Group>
+        <Form.Label>Logo</Form.Label>
+        <Controller
+          name="Logo"
+          control={control}
+          render={({ field }) => <FormControlFile {...field} />}
+        />
+      </Form.Group>
       <Button disabled={loading} type="submit">
         Register
       </Button>

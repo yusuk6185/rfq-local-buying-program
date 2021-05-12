@@ -1,16 +1,12 @@
-import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
 import { FC } from 'react';
-import {Button, Card, Col, Form, Row} from 'react-bootstrap';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 
 import { motion } from 'framer-motion';
 
-import NaviBar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
-import SupplierDetailCard from 'components/TenderDetailCard/SupplierDetailCard';
-import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { ISupplier } from 'models/ISupplier';
 import { ITender } from 'models/ITender';
 
@@ -24,10 +20,7 @@ interface IProps {
   suppliers: ISupplier[];
 }
 
-const LoginPage: FC<IProps> = ({
-  statusCode = null,
-  host = '',
-}) => {
+const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
@@ -69,7 +62,7 @@ const LoginPage: FC<IProps> = ({
                       </Form.Group>
                       <Button className="w-100 mt-3 mb-3">Login</Button>
                       <p className="text-center">
-                        Don't you have an account? <br/>
+                        Don't you have an account? <br />
                         <Link href="/subscribe" passHref>
                           <a>Create one!</a>
                         </Link>

@@ -1,31 +1,39 @@
 import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
-import Link from 'next/link';
-import { FC, useMemo, useState } from 'react';
-import { Button, ButtonGroup, Col, Row } from 'react-bootstrap';
+import { FC } from 'react';
+import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
-import { $enum } from 'ts-enum-util';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
+import RowWithOffsetCol from 'components/RowWithOffsetCol/RowWithOffsetCol';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
-import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { ITender } from 'models/ITender';
 
-import MainLayout from '../../layouts/MainLayout';
+import MainLayout from '../../../layouts/MainLayout';
 
 interface IProps {
   statusCode?: number;
   host: string;
-  tenders: ITender[];
+  tender: ITender;
 }
 
-enum TenderState {
-  closed = 'Closed',
-  active = 'Active',
-}
+export const getStaticPaths = async () => {
+  return {
+    paths: [
+      {
+        params: { id: '1' },
+      },
+      {
+        params: { id: '2' },
+      },
+    ],
+    fallback: true, // See the "fallback" section below
+  };
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
@@ -96,16 +104,7 @@ export const getStaticProps: GetStaticProps = async () => {
     };
     return {
       props: {
-        tenders: [
-          tender,
-          tender,
-          tender,
-          tender,
-          tender,
-          tender,
-          tender,
-          tender,
-        ],
+        tender,
       },
       revalidate: 60, // time in seconds
     };
@@ -120,27 +119,22 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 };
 
-const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
-  const [tenderFilter, setTenderFilter] = useState<TenderState>();
-  const filteredTender = useMemo(() => {
-    switch (tenderFilter) {
-      case TenderState.closed:
-        return tenders.filter(tender => {
-          return moment().startOf('day').isAfter(moment(tender.ClosingAt));
-        });
-      case TenderState.active:
-        return tenders.filter(tender => {
-          return moment()
-            .startOf('day')
-            .isSameOrBefore(moment(tender.ClosingAt));
-        });
-      default:
-        return tenders;
-    }
-  }, [tenderFilter, tenders]);
-
+const CreateProposalPage: FC<IProps> = ({
+  tender,
+  statusCode = null,
+  host = '',
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
+  }
+
+  function onSubmit(values: any) {
+    console.info(values);
   }
 
   return (
@@ -164,50 +158,55 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
-          <SectionWithContainer>
-            <Row className="justify-content-between">
-              <Col md="auto">
-                <h1 className="mb-3">My Tenders</h1>
-              </Col>
-              <Col md="auto">
-                <ButtonGroup size="sm">
-                  <Button
-                    onClick={() => setTenderFilter(undefined)}
-                    variant={
-                      tenderFilter === undefined ? undefined : 'outline-primary'
-                    }
-                  >
-                    All
-                  </Button>
-                  {$enum(TenderState).map(value => (
-                    <Button
-                      onClick={() => setTenderFilter(value)}
-                      key={value}
-                      variant={
-                        value === tenderFilter ? 'primary' : 'outline-primary'
-                      }
-                    >
-                      {value}
-                    </Button>
-                  ))}
-                </ButtonGroup>
-              </Col>
-            </Row>
-            <Row>
-              {filteredTender.map((tender: ITender) => (
-                <Col key={tender.ID} md={3} className="mb-3">
-                  <Link href={`/tenders/${tender.ID}`} passHref>
-                    <Button
-                      variant="link"
-                      className="p-0 text-dark text-left radius-0"
-                      as="a"
-                    >
-                      <TenderDetailCard tender={tender} />
-                    </Button>
-                  </Link>
-                </Col>
-              ))}
-            </Row>
+          <SectionWithContainer className="bg-primary d-flex justify-content-between flex-column flex-grow-1">
+            <RowWithOffsetCol offset={2}>
+              <Card
+                body
+                style={{ background: `url(${tender.HeadingImage})` }}
+                className="mb-3"
+              >
+                <Row>
+                  <Col md="auto">
+                    <span className="text-white">Logo</span>
+                  </Col>
+                  <Col md="auto">
+                    <h5 className="d-block text-white">ESTIMATED DELIVERY</h5>
+                    <span className="text-white">
+                      {moment(tender.ClosingAt).format('DD/MM/YYYY')}
+                    </span>
+                  </Col>
+                </Row>
+              </Card>
+              <Card>
+                <Card.Body className="p-4">
+                  <h3>Create Proposal</h3>
+                  <Form onSubmit={handleSubmit(onSubmit)}>
+                    <Form.Group>
+                      <Form.Label>
+                        Can you describe your solution / product?
+                      </Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        {...register('Description')}
+                      />
+                      {errors.Description && (
+                        <span className="text-error">{errors.Description}</span>
+                      )}
+                    </Form.Group>
+                    <Form.Group>
+                      <Form.Label>How much is going to cost?</Form.Label>
+                      <Form.Control type="number" {...register('Offer')} />
+                      {errors.Offer && (
+                        <span className="text-error">{errors.Offer}</span>
+                      )}
+                    </Form.Group>
+                    <Form.Group>
+                      <Button type="submit">Register</Button>
+                    </Form.Group>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </RowWithOffsetCol>
           </SectionWithContainer>
         </motion.div>
       </MainLayout>
@@ -215,4 +214,4 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
   );
 };
 
-export default TendersPage;
+export default CreateProposalPage;

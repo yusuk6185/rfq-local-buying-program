@@ -1,18 +1,15 @@
 import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
-import Image from 'next/image';
 import { FC } from 'react';
-import { Badge, Card, Col, Row } from 'react-bootstrap';
 
 import { motion } from 'framer-motion';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
-import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
+import SupplierProfile from 'components/SupplierProfile/SupplierProfile';
 import { ISupplier } from 'models/ISupplier';
 
 import MainLayout from '../../layouts/MainLayout';
-import SupplierProfile from 'components/SupplierProfile/SupplierProfile';
 
 export const getStaticPaths = async () => {
   return {

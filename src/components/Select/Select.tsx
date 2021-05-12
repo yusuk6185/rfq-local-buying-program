@@ -6,8 +6,8 @@ export type SelectProps = ComponentProps<typeof ReactSelect> & {
 };
 
 const Select: FC<SelectProps> = ({
-  labelAttribute = 'name',
-  valueAttribute = 'id',
+  labelAttribute = 'Name',
+  valueAttribute = 'ID',
   isClearable = true,
   getOptionLabel,
   ...props
