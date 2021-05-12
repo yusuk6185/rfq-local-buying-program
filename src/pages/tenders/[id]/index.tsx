@@ -48,15 +48,13 @@ const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
         >
           <Navbar />
           <div>
-            <div>
-              <img
-                src="images/projectdetail_bg.jpg"
-                alt="Project Detail Background"
-              />
-            </div>
-
-            <SectionWithContainer>
-              <div>
+            <SectionWithContainer
+              style={{
+                background: 'url(/images/projectdetail_bg.jpg)',
+                backgroundSize: 'cover',
+              }}
+            >
+              <div className="text-white">
                 <h5>Estimated Delivery</h5>
                 <h4 className="font-weight-bold">12/12/2021</h4>
                 <h3 className="font-weight-bold">BHP</h3>
