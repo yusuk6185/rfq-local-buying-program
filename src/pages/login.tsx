@@ -31,8 +31,19 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
 
   const onSubmit = async (value: any) => {
     setLoading(true);
+
     try {
       const response = await request.post('/login', value);
+      // fetch('/api/auth/login', {
+      //   headers: {
+      //     'Access-Control-Allow-Origin': '*',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   method: 'POST',
+      //   body: JSON.stringify(value),
+      // })
+      //   .then(response => response.json())
+      //   .then(data => console.log(data));
       console.info(response);
     } catch (error) {
       console.error(error);
