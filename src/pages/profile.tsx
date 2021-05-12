@@ -36,9 +36,6 @@ export const getStaticProps: GetStaticProps = async () => {
         Name: 'Cool City',
         State_ID: 1,
       },
-      DeletedAt: '2022-03-01',
-      CreatedAt: '2022-03-01',
-      UpdatedAt: '2022-03-01',
       SupplyCategories: [
         {
           ID: 1,
@@ -51,6 +48,9 @@ export const getStaticProps: GetStaticProps = async () => {
           Description: 'Other Name',
         },
       ],
+      DeletedAt: '2022-03-01',
+      CreatedAt: '2022-03-01',
+      UpdatedAt: '2022-03-01',
     };
     return {
       props: {

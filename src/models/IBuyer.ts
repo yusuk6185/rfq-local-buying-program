@@ -1,5 +1,5 @@
-import {IState} from 'models/IState';
-import {ICity} from 'models/ICity';
+import type { ICity } from 'models/ICity';
+import type { IState } from 'models/IState';
 
 export interface IBuyer {
   ID: number;

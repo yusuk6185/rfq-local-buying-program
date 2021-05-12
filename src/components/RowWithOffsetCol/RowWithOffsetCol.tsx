@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import cx from 'classnames';
@@ -8,7 +8,7 @@ type RowWithOffsetColProps = {
   offset?: number;
   className?: string;
 };
-const RowWithOffsetCol: React.FC<RowWithOffsetColProps> = ({
+const RowWithOffsetCol: FC<RowWithOffsetColProps> = ({
   offset,
   colProps,
   children,

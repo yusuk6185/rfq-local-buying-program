@@ -9,7 +9,7 @@ const instance = axios.create({
 
 // Alter defaults after instance has been created
 instance.interceptors.request.use(
-  (config) => {
+  config => {
     if (process.browser) {
       const token = localStorage.getItem('token');
       // eslint-disable-next-line no-param-reassign
