@@ -2,8 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
 import jwt from 'jsonwebtoken';
-
-import pool from './db';
+import pool from 'utils/db';
 
 const bcrypt = require('bcrypt');
 
@@ -12,10 +11,10 @@ const bcrypt = require('bcrypt');
 // REFRESH_TOKEN_SECRET=d251a84f3d83e51f68db56bea902f295
 
 const generateTokens = (ID: number) => {
-  const accessToken = jwt.sign({ ID }, process.env.ACCESS_TOKEN_SECRET, {
+  const accessToken = jwt.sign({ ID }, process.env.ACCESS_TOKEN_SECRET || '', {
     expiresIn: 86400,
   });
-  const refreshToken = jwt.sign({ ID }, process.env.REFRESH_TOKEN_SECRET);
+  const refreshToken = jwt.sign({ ID }, process.env.REFRESH_TOKEN_SECRET || '');
   return { accessToken, refreshToken };
 };
 
@@ -42,16 +41,16 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
     });
   },
 }).post((req, res) => {
-  const { email, password } = req.body;
+  const { Email, Password } = req.body;
   pool
     .query(`SELECT ID, Name, Password, Email FROM public.user WHERE Email=$1`, [
-      email,
+      Email,
     ])
     .then((result: any) => {
       if (result.rowCount > 0) {
         const ID = result.rows[0].id;
         const hashedPassword = result.rows[0].password;
-        if (bcrypt.compareSync(password, hashedPassword)) {
+        if (bcrypt.compareSync(Password, hashedPassword)) {
           const { accessToken, refreshToken } = generateTokens(ID);
           storeTokens(res, accessToken, refreshToken, ID);
           res

@@ -87,6 +87,7 @@
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
     "@types/apicache": "^1.2.2",
+    "@types/bcrypt": "^5.0.0",
     "@types/fingerprintjs2": "^2.0.0",
     "@types/jquery": "^3.5.5",
     "@types/jsonwebtoken": "^8.5.1",

@@ -183,18 +183,4 @@ class HttpRequest {
   }
 }
 
-export const fetcherNextJSAPI = (cookies?: string) =>
-  new HttpRequest(
-    fetch,
-    process.env.NEXT_PUBLIC_API_URL,
-    new Cookies(cookies || (process.browser ? document.cookie : undefined)),
-  );
-
-export const fetcherRecaptcha = () =>
-  new HttpRequest(
-    fetch,
-    process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_URL,
-    new Cookies({}),
-  );
-
 export default HttpRequest;

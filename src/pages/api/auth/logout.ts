@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 
-import pool from './db';
+import pool from 'utils/db';
 
 const handler = nextConnect().post(
   (req: NextApiRequest, res: NextApiResponse) => {
@@ -9,7 +9,7 @@ const handler = nextConnect().post(
 
     pool
       .query(
-        `UPDATE public.user 
+        `UPDATE public.user
             SET token=NULL, refresh_token=NULL
             WHERE ID=$1`,
         [id],
