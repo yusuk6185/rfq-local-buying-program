@@ -85,7 +85,10 @@ const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                     </Button>
                   </Col>
                   <Col md="auto">
-                    <Link href={`/tenders/${query.id}/create-proposal`} passHref>
+                    <Link
+                      href={`/tenders/${query.id}/create-proposal`}
+                      passHref
+                    >
                       <Button as="a" size="sm" variant="success">
                         Submit a quote
                       </Button>
