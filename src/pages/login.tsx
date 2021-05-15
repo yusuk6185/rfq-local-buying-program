@@ -6,7 +6,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 
 import { motion } from 'framer-motion';
-import request from 'utils/request';
+import realRequest from 'utils/realRequest';
 
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import { ISupplier } from 'models/ISupplier';
@@ -14,7 +14,6 @@ import { ITender } from 'models/ITender';
 
 import MainLayout from '../layouts/MainLayout';
 import renderCommonMetaTags from '../utils/renderCommonMetaTags';
-import realRequest from 'utils/realRequest';
 
 interface IProps {
   statusCode?: number;
