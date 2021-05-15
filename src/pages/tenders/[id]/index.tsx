@@ -1,5 +1,7 @@
 import ErrorPage from 'next/error';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 
@@ -12,8 +14,6 @@ import { ITender } from 'models/ITender';
 
 import MainLayout from '../../../layouts/MainLayout';
 
-// import styles from 'styles/projectdetail.module.css';
-
 interface IProps {
   statusCode?: number;
   host: string;
@@ -21,6 +21,8 @@ interface IProps {
 }
 
 const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
+  const { query } = useRouter();
+
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
@@ -66,18 +68,30 @@ const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
             </SectionWithContainer>
           </div>
           <SectionWithContainer>
-            <Row className="justify-content-between">
-              <Col>
-                <h1 className="mb-4">Description</h1>
+            <Row className="justify-content-between mb-4">
+              <Col className="flex-grow-0">
+                <h1 className="mb-0">Description</h1>
               </Col>
               <Col md="auto">
-                <Button variant="outline-info">Attachments</Button>
-              </Col>
-              <Col md="auto">
-                <Button variant="outline-primary">Contact the company</Button>
-              </Col>
-              <Col md="auto">
-                <Button variant="success">Submit a quote</Button>
+                <Row>
+                  <Col md="auto">
+                    <Button size="sm" variant="outline-info">
+                      Attachments
+                    </Button>
+                  </Col>
+                  <Col md="auto">
+                    <Button size="sm" variant="outline-primary">
+                      Contact the company
+                    </Button>
+                  </Col>
+                  <Col md="auto">
+                    <Link href={`/tenders/${query.id}/create-proposal`} passHref>
+                      <Button as="a" size="sm" variant="success">
+                        Submit a quote
+                      </Button>
+                    </Link>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row>
