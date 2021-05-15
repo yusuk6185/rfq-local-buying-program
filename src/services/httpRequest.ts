@@ -1,4 +1,4 @@
-import Cookies, { Cookie } from 'universal-cookie';
+import { Cookie } from 'universal-cookie';
 import { serialize } from 'utils/objectTransformer';
 
 import { HttpRequestError } from './httpRequestError';
