@@ -14,6 +14,7 @@ import { ITender } from 'models/ITender';
 
 import MainLayout from '../layouts/MainLayout';
 import renderCommonMetaTags from '../utils/renderCommonMetaTags';
+import realRequest from 'utils/realRequest';
 
 interface IProps {
   statusCode?: number;
@@ -33,7 +34,7 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
     setLoading(true);
 
     try {
-      const response = await request.post('/login', value);
+      const response = await realRequest.post('/api/auth/login', value);
       // fetch('/api/auth/login', {
       //   headers: {
       //     'Access-Control-Allow-Origin': '*',
