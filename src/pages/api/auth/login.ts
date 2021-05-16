@@ -25,7 +25,7 @@ const storeTokens = (
   ID: number,
 ) =>
   pool
-    .query('UPDATE public.user SET token=$1, refresh_token=$2 WHERE id=$3', [
+    .query('UPDATE "User" SET Token=$1, RefreshToken=$2 WHERE ID=$3', [
       accessToken,
       refreshToken,
       ID,
@@ -43,9 +43,10 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
 }).post((req, res) => {
   const { Email, Password } = req.body;
   pool
-    .query(`SELECT ID, Name, Password, Email FROM public.user WHERE Email=$1`, [
-      Email,
-    ])
+    .query(
+      `SELECT "ID", "Name", "Password", "Email" FROM "User" WHERE "User"."Email"=$1`,
+      [Email],
+    )
     .then((result: any) => {
       if (result.rowCount > 0) {
         const ID = result.rows[0].id;

@@ -4,6 +4,7 @@ import nextConnect from 'next-connect';
 import bcrypt from 'bcrypt';
 import moment from 'moment';
 import pool from 'utils/db';
+
 import { createSupplier, createBuyer } from './user';
 
 const checkEmaiExist = async (Email: string) => {
@@ -20,7 +21,7 @@ const handler = nextConnect().post(
     if (exists) {
       res
         .status(400)
-        .json({ success: false, message: 'Email is already exist!' });
+        .json({ success: false, message: 'Email is already taken!' });
       return;
     }
 
@@ -36,37 +37,35 @@ const handler = nextConnect().post(
         res,
       );
 
-      pool
-        .query(
+      try {
+        const mes = await pool.query(
           `INSERT INTO "User" ("Name", "Password", "Email", "Supplier_ID", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${SupplierID}', '${moment().format(
             'YYYY-MM-DD',
           )}');`,
-        )
-        .then((mes: any) => {
-          if (mes) res.status(200).json({ success: true });
-          return;
-        })
-        .catch((err: any) => {
-          if (err) res.status(500).json(err);
-          return;
-        });
+        );
+        if (mes) {
+          res.status(200).json({ success: true });
+        }
+      } catch (err) {
+        if (err)
+          res.status(500).json({ success: false, message: 'Something wrong' });
+      }
     } else if (Type === 'buyer') {
       const BuyerID = await createBuyer(Name, ABN, Logo, res);
 
-      pool
-        .query(
+      try {
+        const mes = await pool.query(
           `INSERT INTO "User" ("Name", "Password", "Email", "Buyer_ID", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${BuyerID}', '${moment().format(
             'YYYY-MM-DD',
           )}');`,
-        )
-        .then((mes: any) => {
-          if (mes) return res.status(200).json({ success: true });
-          return;
-        })
-        .catch((err: any) => {
-          if (err) res.status(500).json(err);
-          return;
-        });
+        );
+        if (mes) {
+          res.status(200).json({ success: true });
+        }
+      } catch (err) {
+        if (err)
+          res.status(500).json({ success: false, message: 'Something wrong' });
+      }
     }
   },
 );
