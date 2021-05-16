@@ -20,8 +20,13 @@ const checkEmaiExist = async (Email: string) => {
 const handler = nextConnect().post(
   async (req: NextApiRequest, res: NextApiResponse) => {
     const { Type, Password, Name, Email, ABN, Logo } = req.body;
+    let exists = null;
+    try {
+      exists = await checkEmaiExist(Email);
+    } catch (err) {
+      res.status(500).json({ err });
+    }
 
-    const exists = await checkEmaiExist(Email);
     if (exists) {
       res
         .status(400)
