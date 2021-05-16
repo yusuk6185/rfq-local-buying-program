@@ -49,7 +49,7 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
     )
     .then((result: any) => {
       if (result.rowCount > 0) {
-        const ID = result.rows[0].id;
+        const { ID } = result.rows[0];
         const hashedPassword = result.rows[0].password;
         if (bcrypt.compareSync(Password, hashedPassword)) {
           const { accessToken, refreshToken } = generateTokens(ID);
