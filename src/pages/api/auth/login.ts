@@ -15,6 +15,7 @@ const generateTokens = (ID: number) => {
     expiresIn: 86400,
   });
   const refreshToken = jwt.sign({ ID }, process.env.REFRESH_TOKEN_SECRET || '');
+
   return { accessToken, refreshToken };
 };
 
@@ -31,7 +32,7 @@ const storeTokens = (
       ID,
     ])
     .catch((err: any) => {
-      res.status(500).send(err);
+      return err;
     });
 
 const handler = nextConnect<NextApiRequest, NextApiResponse>({
@@ -42,6 +43,7 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
   },
 }).post((req, res) => {
   const { Email, Password } = req.body;
+
   pool
     .query(
       `SELECT "ID", "Name", "Password", "Email" FROM "User" WHERE "User"."Email"=$1`,
@@ -50,13 +52,14 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
     .then((result: any) => {
       if (result.rowCount > 0) {
         const { ID } = result.rows[0];
-        const hashedPassword = result.rows[0].password;
+        const hashedPassword = result.rows[0].Password;
         if (bcrypt.compareSync(Password, hashedPassword)) {
           const { accessToken, refreshToken } = generateTokens(ID);
+
           storeTokens(res, accessToken, refreshToken, ID);
           res
             .status(200)
-            .send({ success: true, tokens: { accessToken, refreshToken } });
+            .send({ success: true, tokens: { accessToken, refreshToken }, ID });
         } else
           res
             .status(400)
