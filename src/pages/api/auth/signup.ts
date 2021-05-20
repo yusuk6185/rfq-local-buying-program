@@ -7,11 +7,6 @@ import pool from 'utils/db';
 
 import { createSupplier, createBuyer } from './user';
 
-const errHandler = (promise: any) => {
-  return promise
-    .then((data: any) => [data, undefined])
-    .catch((err: any) => Promise.resolve([undefined, err]));
-};
 const checkEmaiExist = async (Email: string) => {
   let result = null;
   result = await pool.query(
@@ -40,11 +35,12 @@ const handler = nextConnect().post(
     const hashedPassword = bcrypt.hashSync(Password as string, 10);
     if (Type === 'supplier') {
       const { State_ID, City_ID } = req.body;
-      const [SupplierID, supplierIDErr] = await errHandler(
-        createSupplier(Name, ABN, Logo, State_ID, City_ID),
-      );
-      if (supplierIDErr)
+      let SupplierID = null;
+      try {
+        SupplierID = await createSupplier(Name, ABN, Logo, State_ID, City_ID);
+      } catch (err) {
         return res.status(500).json({ message: 'Something wrong' });
+      }
 
       try {
         const result = await pool.query(
@@ -57,13 +53,15 @@ const handler = nextConnect().post(
         return res.status(500).json({ err });
       }
     } else if (Type === 'buyer') {
-      const [BuyerID, BuyerIDErr] = await errHandler(
-        createBuyer(Name, ABN, Logo),
-      );
-      if (BuyerIDErr)
+      let BuyerID = null;
+      try {
+        BuyerID = await createBuyer(Name, ABN, Logo);
+      } catch (err) {
         return res
           .status(500)
-          .json({ success: false, message: 'Something wrong' });
+          .json({ success: false, message: 'Cannot create Buyer' });
+      }
+
       try {
         const result = await pool.query(
           `INSERT INTO "User" ("Name", "Password", "Email", "Buyer_ID", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${BuyerID}', '${moment().format(
@@ -74,7 +72,7 @@ const handler = nextConnect().post(
       } catch (err) {
         return res
           .status(500)
-          .json({ success: false, message: 'Something wrong' });
+          .json({ success: false, message: 'Cannot create user' });
       }
     }
     return res.status(500).json({ message: 'something resally wrong' });

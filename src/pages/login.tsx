@@ -1,6 +1,7 @@
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
@@ -25,13 +26,14 @@ interface IProps {
 const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
 
   const onSubmit = async (value: any) => {
     setLoading(true);
-
     try {
       const response = await realRequest.post('/api/auth/login', value);
       // fetch('/api/auth/login', {
@@ -45,6 +47,9 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
       //   .then(response => response.json())
       //   .then(data => console.log(data));
       console.info(response);
+      if (response.data.success) {
+        router.push('/');
+      }
     } catch (error) {
       console.error(error);
     }
@@ -79,12 +84,12 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                     <Form onSubmit={handleSubmit(onSubmit)}>
                       <Form.Group>
                         <Form.Label>Email</Form.Label>
-                        <Form.Control {...register('email')} />
+                        <Form.Control {...register('Email')} />
                       </Form.Group>
                       <Form.Group>
                         <Form.Label>Password</Form.Label>
                         <Form.Control
-                          {...register('password')}
+                          {...register('Password')}
                           type="password"
                         />
                       </Form.Group>
