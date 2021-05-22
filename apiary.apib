@@ -1,0 +1,742 @@
+FORMAT: 1A
+HOST: https://polls.apiblueprint.org/
+
+# IFN 711
+
+## Suppliers [/suppliers]
+
+### Current Suppliers [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "ID": 1,
+            "Name": "Metal Supply Co",
+            "ABN": "02 999 111 888",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "StateID": 1
+            }
+            ],
+
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "DeletedAt": "2021-04-25T11:55:34Z"
+          },
+          {
+            "ID": 2,
+            "Name": "COGS",
+            "ABN": "98 669 677 128",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "StateID": 1
+            }
+            ],
+ 
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "DeletedAt": "2021-04-25T11:55:34Z"
+          },
+          {
+            "ID": 3,
+            "Name": "Tools 4 days",
+            "ABN": "02 999 111 888",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "StateID": 1
+            }
+            ],
+
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "DeletedAt": "2021-04-25T11:55:34Z"
+          },
+          {
+            "ID": 4,
+            "Name": "Fall ball",
+            "ABN": "12 929 121 828",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "StateID": 1
+            }
+            ],
+
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "DeletedAt": "2021-04-25T11:55:34Z"
+          }
+        ]
+
+### GET ONE Supplier [GET /suppliers/{id}]
+
++ Response 200 (application/json)
+
+        {
+            "ID": 1,
+            "Name": "Metal Supply Co",
+            "ABN": "02 999 111 888",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "StateID": 1
+            }
+            ],
+
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "DeletedAt": "2021-04-25T11:55:34Z"
+          }
+            
+### Create a New Supplier [POST]
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /supplier/2
+
+    + Body
+
+            {
+                "Question": "New supplier",
+                "Published_at": "2015-08-05T08:40:51.620Z",
+                "Choices": [
+                    {
+                        "Supplier": "Swift",
+                        "ABN": "12 222 222 333",
+                        "Logo": "PHHSK"
+                    }, {
+                        "Supplier": "Ssact",
+                        "ABN": "12 999 111 333",
+                        "Logo": "PHHSK"
+                    }
+                ]
+            }
+
+## Buyers [/buyers]
+
+### Current Buyers [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "ID": 1,
+            "Name": "BHP",
+            "ABN": "26 125 643 045",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "State_ID": 1
+            }],
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z"
+          },
+          {
+            "ID": 2,
+            "Name": "BMC",
+            "ABN": "77 123 765 890",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "State_ID": 1
+            }],
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z"
+          },
+          {
+            "ID": 3,
+            "Name": "BMA",
+            "ABN": "58 566 908 203",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "State_ID": 1
+            }],
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z"
+          }
+        ]
+
+
+### GET ONE Buyer [GET /buyers/{id}]
+
++ Response 200 (application/json)
+
+        {
+            "ID": 1,
+            "Name": "BHP",
+            "ABN": "26 125 643 045",
+            "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+            "Description": ["Description",
+            {
+              "StateID": 1,
+              "Name": "City",
+              "Acronym": "CIT"
+            },{
+              "CityID": 1,
+              "Name": "Cool City",
+              "State_ID": 1
+            }],
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z"
+        }
+
+
+### Create a New Buyer [POST]
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /Buyers/2
+
+    + Body
+
+            {
+                "Question": "New Buyer",
+                "Published_at": "2015-08-05T08:40:51.620Z",
+                "Name": "smashers",
+                "ABN": "61 882 999 855",
+                "Logo": "pem.png"
+            }
+
+ 
+ 
+## Tenders [/tenders]
+
+### Current Tenders [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "ID": 1,
+            "BuyerID": 1,
+            "PublishedAt": "2021-04-25T11:55:34Z",
+            "ClosingAt": "2021-04-25T11:55:34Z",
+            "Description": "Create metal sheets",
+            "State_ID": 1,
+            "City_ID": 2,
+            "Offer": 6000.0,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Buyer": {
+              "ABN": "21321",
+              "ID": 1,
+              "Name": "Name",
+              "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+              "Description": ["Description",
+              {
+                "StateID": 1,
+                "Name": "City",
+                "Acronym": "CIT"
+              },{
+                "CityID": 1,
+                "Name": "Cool City",
+                "State_ID": 1
+              }],
+              "DeletedAt": "2022-03-01",
+              "CreatedAt": "2022-03-01",
+              "UpdatedAt": "2022-03-01"
+            }
+          },
+          {
+            "ID": 2,
+            "BuyerID": 2,
+            "PublishedAt": "2021-04-25T11:55:34Z",
+            "ClosingAt": "2021-04-25T11:55:34Z",
+            "Description": "Create metal sheets",
+            "State_ID": 2,
+            "City_ID": 1,
+            "Offer": 6000.0,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Buyer": {
+              "ABN": "21321",
+              "ID": 1,
+              "Name": "Name",
+              "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+              "Description": ["Description",
+              {
+                "StateID": 1,
+                "Name": "City",
+                "Acronym": "CIT"
+              },{
+                "CityID": 1,
+                "Name": "Cool City",
+                "State_ID": 1
+              }],
+              "DeletedAt": "2022-03-01",
+              "CreatedAt": "2022-03-01",
+              "UpdatedAt": "2022-03-01"
+            }
+          },
+          {
+            "ID": 3,
+            "BuyerID": 2,
+            "PublishedAt": "2021-04-25T11:55:34Z",
+            "ClosingAt": "2021-04-25T11:55:34Z",
+            "Description": "Create metal sheets",
+            "State_ID": 2,
+            "City_ID": 3,
+            "Offer": 6000.0,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Buyer": {
+              "ABN": "21321",
+              "ID": 1,
+              "Name": "Name",
+              "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+              "Description": ["Description",
+              {
+                "StateID": 1,
+                "Name": "City",
+                "Acronym": "CIT"
+              },{
+                "CityID": 1,
+                "Name": "Cool City",
+                "State_ID": 1
+              }],
+              "DeletedAt": "2022-03-01",
+              "CreatedAt": "2022-03-01",
+              "UpdatedAt": "2022-03-01"
+            }
+          },
+          {
+            "ID": 4,
+            "BuyerID": 3,
+            "PublishedAt": "2021-04-25T11:55:34Z",
+            "ClosingAt": "2021-04-25T11:55:34Z",
+            "Description": "Create metal sheets",
+            "State_ID": 3,
+            "City_ID": 4,
+            "Offer": 6000.0,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Buyer": {
+              "ABN": "21321",
+              "ID": 1,
+              "Name": "Name",
+              "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+              "Description": ["Description",
+             {
+                "StateID": 1,
+                "Name": "City",
+                "Acronym": "CIT"
+              },{
+                "CityID": 1,
+                "Name": "Cool City",
+                "State_ID": 1
+              }],
+              "DeletedAt": "2022-03-01",
+              "CreatedAt": "2022-03-01",
+              "UpdatedAt": "2022-03-01"
+            }
+          }
+        ]
+
+
+
+### GET ONE Tender [GET /tenders/{id}]
+
++ Response 200 (application/json)
+
+        {
+            "ID": 4,
+            "BuyerID": 3,
+            "PublishedAt": "2021-04-25T11:55:34Z",
+            "ClosingAt": "2021-04-25T11:55:34Z",
+            "Description": "Create metal sheets",
+            "State_ID": 3,
+            "City_ID": 4,
+            "Offer": 6000.0,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Buyer": {
+              "ABN": "21321",
+              "ID": 1,
+              "Name": "Name",
+              "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+              "Description": ["Description",
+             {
+                "StateID": 1,
+                "Name": "City",
+                "Acronym": "CIT"
+              },{
+                "CityID": 1,
+                "Name": "Cool City",
+                "State_ID": 1
+              }],
+              "DeletedAt": "2022-03-01",
+              "CreatedAt": "2022-03-01",
+              "UpdatedAt": "2022-03-01"
+            }
+          }
+        
+### Add tender [POST]
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /tenders/2
+
+    + Body
+
+            {
+                "Question": "Add tender",
+                "PublishedAt": "2015-08-05T08:40:51.620Z",
+                "Tender_ID": 1,
+                "Buyer_ID": 2,
+                "Description": "Beat metal",
+                "State_ID": 4,
+                "City_ID": 3,
+                "Offer": 5000.00
+            }
+               
+## Profile [/profile]
+
+### Current Profiles [GET]
+
++ Response 200 (application/json)
+
+        {
+            "ID": 1,
+            "Name": "BHP",
+            "Email": "bhp@test.com",
+            "Password": "BHP1234",
+            "BuyerID": 1,
+            "SupplierID": null,
+            "DeletedAt": "2021-04-25T11:55:34Z",
+            "CreatedAt": "2021-04-25T11:55:34Z",
+            "UpdatedAt": "2021-04-25T11:55:34Z",
+            "Token": "Asi120Ke",
+            "RefreshToken": "asdasaccAE"
+        }
+
+## Proposals [/proposals]
+
+### Currents Proposals [GET]
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "ApprovedAt": "2020-03-01",
+                    "CreatedAt": "2020-03-01",
+                    "DeletedAt": "2020-03-01",
+                    "Description": "2020-03-01",
+                    "Offer": 1231319,
+                    "Supplier": {
+                      "ABN": "21 321 321 321",
+                      "ID": 1,
+                      "Name": "Name",
+                      "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",{
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Supplier_ID": 1,
+                    "Tender": {
+                      "ID": 1,
+                      "Buyer_ID": 1,
+                      "Buyer": {
+                        "ABN": "21 321 321 321",
+                        "ID": 1,
+                        "Name": "Name",
+                        "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                        "Description": ["Description",
+                        {
+                          "StateID": 1,
+                          "Name": "City",
+                          "Acronym": "CIT"
+                        },{
+                          "CityID": 1,
+                          "Name": "Cool City",
+                          "State_ID": 1
+                        }],
+                        "DeletedAt": "2022-03-01",
+                        "CreatedAt": "2022-03-01",
+                        "UpdatedAt": "2022-03-01"
+                      },
+                      "PublishedAt": "2022-03-01",
+                      "ClosingAt": "2021-04-29",
+                      "Title": "Title",
+                      "HeadingImage": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",
+                      {
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "Offer": 2323.23,
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Tender_ID": 1,
+                    "UpdatedAt": "2020-03-01",
+                    "ID": 1
+                },
+                
+                {
+                    "ApprovedAt": "2020-03-01",
+                    "CreatedAt": "2020-03-01",
+                    "DeletedAt": "2020-03-01",
+                    "Description": "2020-03-01",
+                    "Offer": 1231319,
+                    "Supplier": {
+                      "ABN": "21 321 321 321",
+                      "ID": 1,
+                      "Name": "Name",
+                      "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",{
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Supplier_ID": 1,
+                    "Tender": {
+                      "ID": 1,
+                      "Buyer_ID": 1,
+                      "Buyer": {
+                        "ABN": "21 321 321 321",
+                        "ID": 1,
+                        "Name": "Name",
+                        "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                        "Description": ["Description",
+                        {
+                          "StateID": 1,
+                          "Name": "City",
+                          "Acronym": "CIT"
+                        },{
+                          "CityID": 1,
+                          "Name": "Cool City",
+                          "State_ID": 1
+                        }],
+                        "DeletedAt": "2022-03-01",
+                        "CreatedAt": "2022-03-01",
+                        "UpdatedAt": "2022-03-01"
+                      },
+                      "PublishedAt": "2022-03-01",
+                      "ClosingAt": "2021-04-29",
+                      "Title": "Title",
+                      "HeadingImage": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",
+                      {
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "Offer": 2323.23,
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Tender_ID": 1,
+                    "UpdatedAt": "2020-03-01",
+                    "ID": 1
+                }
+            ]
+                
+                
+
+### GET ONE Proposal [GET /proposals/{id}]
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "ApprovedAt": "2020-03-01",
+                    "CreatedAt": "2020-03-01",
+                    "DeletedAt": "2020-03-01",
+                    "Description": "2020-03-01",
+                    "Offer": 1231319,
+                    "Supplier": {
+                      "ABN": "21 321 321 321",
+                      "ID": 1,
+                      "Name": "Name",
+                      "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",{
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Supplier_ID": 1,
+                    "Tender": {
+                      "ID": 1,
+                      "Buyer_ID": 1,
+                      "Buyer": {
+                        "ABN": "21 321 321 321",
+                        "ID": 1,
+                        "Name": "Name",
+                        "Logo": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                        "Description": ["Description",
+                        {
+                          "StateID": 1,
+                          "Name": "City",
+                          "Acronym": "CIT"
+                        },{
+                          "CityID": 1,
+                          "Name": "Cool City",
+                          "State_ID": 1
+                        }],
+                        "DeletedAt": "2022-03-01",
+                        "CreatedAt": "2022-03-01",
+                        "UpdatedAt": "2022-03-01"
+                      },
+                      "PublishedAt": "2022-03-01",
+                      "ClosingAt": "2021-04-29",
+                      "Title": "Title",
+                      "HeadingImage": "https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80",
+                      "Description": ["Description",
+                      {
+                        "StateID": 1,
+                        "Name": "City",
+                        "Acronym": "CIT"
+                      },{
+                        "CityID": 1,
+                        "Name": "Cool City",
+                        "State_ID": 1
+                      }],
+                      "Offer": 2323.23,
+                      "DeletedAt": "2022-03-01",
+                      "CreatedAt": "2022-03-01",
+                      "UpdatedAt": "2022-03-01"
+                    },
+                    "Tender_ID": 1,
+                    "UpdatedAt": "2020-03-01",
+                    "ID": 1
+                  }
+                ]
+                
+### Add proposal [POST]
+
++ Request (application/json)
+
+        {
+            "Proposal": "What is your proposal?",
+            "ProposalID": [
+                1, 2, 3, 4, 5
+            ],
+            "TenderID": [
+                1,2,3,4,5
+            ], 
+            "SupplierID": [
+             1,2,3,4,5,6,7,8
+            ],
+            "Offer": 213.2
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+ 
+            Location: /proposals/2
+
+    + Body
+
+            {
+                "Question": "What is your proposal?",
+                "Published_at": "2015-08-05T08:40:51.620Z",
+                "ProposalID": 1,
+                "TenderID": 1,
+                "SupplierID": 2,
+                "Offer": 6656.00
+            }
