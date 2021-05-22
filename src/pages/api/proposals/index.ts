@@ -11,10 +11,10 @@ const createProposal = async (
   Offer: any,
 ) =>
   pool.query(
-    `INSERT INTO "Proposal" ("Tender_ID", "Supplier_ID", "Description", "Offer", "ApprovedAt", "CreatedAt")
+    `INSERT INTO "Proposal" ("Tender_ID", "Supplier_ID", "Description", "Offer", "CreatedAt")
      VALUES ('${Tender_ID}', '${Supplier_ID}', '${Description}', ${Offer}, '${moment().format(
       'YYYY-MM-DD',
-    )}', '${moment().format('YYYY-MM-DD')}')
+    )}')
      RETURNING "ID"`,
   );
 
@@ -45,7 +45,8 @@ const handler = nextConnect()
       });
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { Tender_ID, Supplier_ID, Description, Offer } = req.body;
+    const { Description, Offer } = req.body;
+    const { Tender_ID, Supplier_ID } = jwtdecode(req.headers.authorization);
     let result = null;
     try {
       result = await createProposal(Tender_ID, Supplier_ID, Description, Offer);
@@ -57,9 +58,9 @@ const handler = nextConnect()
       });
     }
 
-    if (result.rowCount > 0) {
-      const ProposalID = result.rows[0].ID;
-      const { ProposalAttachment } = req.body;
+    const ProposalID = result.rows[0].ID;
+    const { ProposalAttachment } = req.body;
+    if (ProposalAttachment !== undefined && ProposalAttachment.length > 0)
       try {
         ProposalAttachment.map(async (attachment: any) => {
           result = await createProposalAttachment(ProposalID, attachment.URL);
@@ -73,7 +74,8 @@ const handler = nextConnect()
           err,
         });
       }
-    }
+    else return res.status(200).json({ success: true, ProposalID });
+
     return res
       .status(500)
       .json({ succes: false, message: 'Create Proposal not successful' });
