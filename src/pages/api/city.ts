@@ -8,16 +8,12 @@ const handler = nextConnect().get(
     pool
       .query(`SELECT * FROM "City"`)
       .then((result: any) => {
-        if (result.rowCount > 0)
-          return res.status(200).json({ success: true, City: result.rows });
-        return res
-          .status(400)
-          .json({ success: false, message: 'No City Exist' });
+        return res.status(200).json({ success: true, City: result.rows });
       })
       .catch((err: any) => {
         return res.status(500).json({
           success: false,
-          message: 'Something wrong when getting City',
+          message: 'Something wrong when getting Citys',
           err,
         });
       });

@@ -75,7 +75,7 @@ const handler = nextConnect().post(
           .status(500)
           .json({ success: false, message: 'Cannot create user' });
       }
-    } else if (Type === undefined) {
+    } else if (Type === 'user') {
       try {
         const result = await pool.query(
           `INSERT INTO "User" ("Name", "Password", "Email", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${moment().format(

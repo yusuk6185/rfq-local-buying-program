@@ -8,11 +8,7 @@ const handler = nextConnect().get(
     pool
       .query(`SELECT * FROM "State"`)
       .then((result: any) => {
-        if (result.rowCount > 0)
-          return res.status(200).json({ success: true, State: result.rows });
-        return res
-          .status(400)
-          .json({ success: false, message: 'No State Exist' });
+        return res.status(200).json({ success: true, State: result.rows });
       })
       .catch((err: any) => {
         return res.status(500).json({
