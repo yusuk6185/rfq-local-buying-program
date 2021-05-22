@@ -67,7 +67,7 @@ module.exports = {
             allowNull: false,
           },
           Logo: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: false,
           },
           State_ID: {
@@ -155,7 +155,7 @@ module.exports = {
             allowNull: false,
           },
           Logo: {
-            type: Sequelize.STRING,
+            type: Sequelize.TEXT,
             allowNull: false,
           },
           CreatedAt: {
@@ -849,16 +849,15 @@ module.exports = {
     try {
       return Promise.all([
         queryInterface.dropTable('User'),
-        queryInterface.dropTable('Buyer'),
-        queryInterface.dropTable('City'),
-        queryInterface.dropTable('Proposal'),
-        queryInterface.dropTable('ProposalAttachment'),
-        queryInterface.dropTable('State'),
-        queryInterface.dropTable('Supplier'),
-        queryInterface.dropTable('SupplyCategory'),
-        queryInterface.dropTable('Tender'),
         queryInterface.dropTable('TenderAttachment'),
-        queryInterface.dropTable('User'),
+        queryInterface.dropTable('ProposalAttachment'),
+        queryInterface.dropTable('Tender'),
+        queryInterface.dropTable('Proposal'),
+        queryInterface.dropTable('Supplier'),
+        queryInterface.dropTable('City'),
+        queryInterface.dropTable('State'),
+        queryInterface.dropTable('Buyer'),
+        queryInterface.dropTable('SupplyCategory'),
       ]);
     } catch (e) {
       console.error(e);

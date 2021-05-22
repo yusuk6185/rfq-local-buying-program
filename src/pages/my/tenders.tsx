@@ -170,27 +170,42 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
                 <h1 className="mb-3">My Tenders</h1>
               </Col>
               <Col md="auto">
-                <ButtonGroup size="sm">
-                  <Button
-                    onClick={() => setTenderFilter(undefined)}
-                    variant={
-                      tenderFilter === undefined ? undefined : 'outline-primary'
-                    }
-                  >
-                    All
-                  </Button>
-                  {$enum(TenderState).map(value => (
-                    <Button
-                      onClick={() => setTenderFilter(value)}
-                      key={value}
-                      variant={
-                        value === tenderFilter ? 'primary' : 'outline-primary'
-                      }
-                    >
-                      {value}
-                    </Button>
-                  ))}
-                </ButtonGroup>
+                <Row className="align-items-center">
+                  <Col md="auto">
+                    <Link href="/tenders/create">
+                      <Button size="sm" variant="success" as="a">
+                        Create Tender
+                      </Button>
+                    </Link>
+                  </Col>
+                  <Col md="auto">
+                    <ButtonGroup size="sm">
+                      <Button
+                        onClick={() => setTenderFilter(undefined)}
+                        variant={
+                          tenderFilter === undefined
+                            ? undefined
+                            : 'outline-primary'
+                        }
+                      >
+                        All
+                      </Button>
+                      {$enum(TenderState).map(value => (
+                        <Button
+                          onClick={() => setTenderFilter(value)}
+                          key={value}
+                          variant={
+                            value === tenderFilter
+                              ? 'primary'
+                              : 'outline-primary'
+                          }
+                        >
+                          {value}
+                        </Button>
+                      ))}
+                    </ButtonGroup>
+                  </Col>
+                </Row>
               </Col>
             </Row>
             <Row>

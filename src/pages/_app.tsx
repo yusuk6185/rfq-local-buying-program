@@ -2,6 +2,8 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Router } from 'next/router';
 import { useMemo } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import '../styles/index.scss';
 
@@ -60,6 +62,7 @@ function MyApp({ Component, pageProps }: IProps) {
         <meta name="screen-orientation" content="portrait" />
         <title>RFQ - CRES</title>
       </Head>
+      <ToastContainer />
       <Component host={host} {...pageProps} />
     </AuthContextProvider>
   );

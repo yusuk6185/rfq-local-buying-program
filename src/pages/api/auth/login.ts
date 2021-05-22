@@ -10,11 +10,11 @@ const bcrypt = require('bcrypt');
 // ACCESS_TOKEN_SECRET=d4bbdad0d47cf552c0d669941097eb02
 // REFRESH_TOKEN_SECRET=d251a84f3d83e51f68db56bea902f295
 
-const generateTokens = (ID: number) => {
-  const accessToken = jwt.sign({ ID }, process.env.ACCESS_TOKEN_SECRET || '', {
+const generateTokens = (user: any) => {
+  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET || '', {
     expiresIn: 86400,
   });
-  const refreshToken = jwt.sign({ ID }, process.env.REFRESH_TOKEN_SECRET || '');
+  const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET || '');
 
   return { accessToken, refreshToken };
 };
@@ -46,15 +46,21 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>({
 
   pool
     .query(
-      `SELECT "ID", "Name", "Password", "Email" FROM "User" WHERE "User"."Email"=$1`,
+      `SELECT "ID", "Name", "Password", "Email", "Buyer_ID", "Supplier_ID" FROM "User" WHERE "User"."Email"=$1`,
       [Email],
     )
     .then((result: any) => {
       if (result.rowCount > 0) {
-        const { ID } = result.rows[0];
+        const { ID, Name, Supplier_ID, Buyer_ID } = result.rows[0];
         const hashedPassword = result.rows[0].Password;
         if (bcrypt.compareSync(Password, hashedPassword)) {
-          const { accessToken, refreshToken } = generateTokens(ID);
+          const { accessToken, refreshToken } = generateTokens({
+            ID,
+            Email,
+            Name,
+            Supplier_ID,
+            Buyer_ID,
+          });
 
           storeTokens(res, accessToken, refreshToken, ID);
           res

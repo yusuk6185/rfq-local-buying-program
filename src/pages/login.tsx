@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
 import realRequest from 'utils/realRequest';
 
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
+import { useAuth } from 'contexts/authContext';
 import { ISupplier } from 'models/ISupplier';
 import { ITender } from 'models/ITender';
 
@@ -27,6 +29,7 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
@@ -36,21 +39,17 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
     setLoading(true);
     try {
       const response = await realRequest.post('/api/auth/login', value);
-      // fetch('/api/auth/login', {
-      //   headers: {
-      //     'Access-Control-Allow-Origin': '*',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   method: 'POST',
-      //   body: JSON.stringify(value),
-      // })
-      //   .then(response => response.json())
-      //   .then(data => console.log(data));
-      console.info(response);
       if (response.data.success) {
-        router.push('/');
+        await login(value.Email, value.Password);
+        toast.success('Login with success!', {
+          position: 'top-right',
+        });
+        await router.push('/');
       }
     } catch (error) {
+      toast.error(`Error in authentication`, {
+        position: 'top-right',
+      });
       console.error(error);
     }
     setLoading(false);

@@ -4,8 +4,10 @@ import Head from 'next/head';
 import { FC } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
+import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
 import FormControlFile from 'components/FormControlFile/FormControlFile';
@@ -67,9 +69,15 @@ const CreateTenderPage: FC<IProps> = ({
     return <ErrorPage statusCode={statusCode} />;
   }
 
-  function onSubmit(values: any) {
-    console.info(values);
-  }
+  const onSubmit = async (values: any) => {
+    try {
+      const response = await realRequest.post('/api/tenders', values);
+      toast.success('Created successfully');
+      console.info(response);
+    } catch (error) {
+      toast.error('Something happened');
+    }
+  };
 
   return (
     <>

@@ -5,16 +5,17 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, Card, Col, Form, FormProps, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
 // eslint-disable-next-line import/no-unresolved
 import { Except } from 'type-fest';
-import realRequest from 'utils/realRequest';
 
 import FormControlFile from 'components/FormControlFile/FormControlFile';
 import FormGroupWithLabelAndControl from 'components/FormGroupWithLabelAndControl/FormGroupWithLabelAndControl';
 import FormGroupWithLabelAndSelect from 'components/FormGroupWithLabelAndSelect/FormGroupWithLabelAndSelect';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
+import { useAuth } from 'contexts/authContext';
 import { ICity } from 'models/ICity';
 import { IState } from 'models/IState';
 import { ISupplier } from 'models/ISupplier';
@@ -218,7 +219,8 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { query } = useRouter();
   const [loading, setLoading] = useState(false);
   const type = query.type as SubscribePageTypes;
-
+  const { login, createUser } = useAuth();
+  const router = useRouter();
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
@@ -226,13 +228,19 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const onSubmit = async (value: any) => {
     setLoading(true);
     try {
-      const response = await realRequest.post('/api/auth/signup', {
+      await createUser({
         ...value,
         Type: type,
       });
-      console.info(response);
+      toast.success('Created with success!', {
+        position: 'top-right',
+      });
+      await login(value.Email, value.Password);
+      await router.push('/');
     } catch (error) {
-      console.error(error);
+      toast.error(error, {
+        position: 'top-right',
+      });
     }
     setLoading(false);
   };

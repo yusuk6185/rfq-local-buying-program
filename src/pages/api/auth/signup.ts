@@ -7,7 +7,7 @@ import pool from 'utils/db';
 
 import { createSupplier, createBuyer } from './user';
 
-const checkEmaiExist = async (Email: string) => {
+const checkEmailExist = async (Email: string) => {
   let result = null;
   result = await pool.query(
     `SELECT EXISTS (SELECT * FROM "User" WHERE "Email"='${Email}');`,
@@ -21,7 +21,7 @@ const handler = nextConnect().post(
     const { Type, Password, Name, Email, ABN, Logo } = req.body;
     let exists = null;
     try {
-      exists = await checkEmaiExist(Email);
+      exists = await checkEmailExist(Email);
     } catch (err) {
       return res.status(500).json({ err });
     }
@@ -57,6 +57,7 @@ const handler = nextConnect().post(
       try {
         BuyerID = await createBuyer(Name, ABN, Logo);
       } catch (err) {
+        console.error(err);
         return res
           .status(500)
           .json({ success: false, message: 'Cannot create Buyer' });
