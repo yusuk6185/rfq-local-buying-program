@@ -8,7 +8,7 @@ const handler = nextConnect().get(
     pool
       .query(`SELECT * FROM "State"`)
       .then((result: any) => {
-        return res.status(200).json({ success: true, State: result.rows });
+        return res.status(200).json({ success: true, items: result.rows });
       })
       .catch((err: any) => {
         return res.status(500).json({

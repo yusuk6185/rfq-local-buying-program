@@ -5,8 +5,8 @@ declare global {
       API_URL: string;
       NODE_ENV: 'development' | 'production';
       DATABASE_CONNECTION_STRING: string;
-      ACCESS_TOKEN_SECRET?: string;
-      REFRESH_TOKEN_SECRET?: string;
+      ACCESS_TOKEN_SECRET: string;
+      REFRESH_TOKEN_SECRET: string;
       NEXT_PUBLIC_API_URL: string;
     }
   }

@@ -1,6 +1,7 @@
 import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
@@ -11,6 +12,7 @@ import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
 import FormControlFile from 'components/FormControlFile/FormControlFile';
+import PrivatePageContext from 'components/PrivatePageContext/PrivatePageContext';
 import RowWithOffsetCol from 'components/RowWithOffsetCol/RowWithOffsetCol';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import Select from 'components/Select/Select';
@@ -34,12 +36,29 @@ export const getStaticProps: GetStaticProps = async () => {
     // const [] = await Promise.all([
     //   // TODO: Add the requests
     // ]);
+    const [
+      {
+        data: { items: cities },
+      },
+      {
+        data: { items: states },
+      },
+      {
+        data: { items: supplyCategories },
+      },
+    ] = await Promise.all([
+      realRequest('/api/cities'),
+      realRequest('/api/states'),
+      realRequest('/api/supply_categories'),
+    ]);
+
     return {
       props: {
-        cities: [],
-        states: [],
+        cities,
+        states,
+        supplyCategories,
       },
-      revalidate: 60, // time in seconds
+      revalidate: 10, // time in seconds
     };
   } catch (error) {
     console.error('[ERROR]', error);
@@ -53,12 +72,13 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const CreateTenderPage: FC<IProps> = ({
-  cities,
-  states,
-  supplyCategories,
+  cities = [],
+  states = [],
+  supplyCategories = [],
   statusCode = null,
   host = '',
 }) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -69,18 +89,35 @@ const CreateTenderPage: FC<IProps> = ({
     return <ErrorPage statusCode={statusCode} />;
   }
 
-  const onSubmit = async (values: any) => {
+  const onSubmit = async ({
+    City_ID,
+    State_ID,
+    SupplyCategories,
+    ...values
+  }: any) => {
     try {
-      const response = await realRequest.post('/api/tenders', values);
+      const { data: createTenderResponse } = await realRequest.post(
+        '/api/tenders',
+        {
+          ...values,
+          City_ID: (City_ID || {}).ID,
+          State_ID: (State_ID || {}).ID,
+          SupplyCategories: (SupplyCategories || []).map(
+            (supplyCategory: ISupplyCategory) => supplyCategory.ID,
+          ),
+        },
+      );
       toast.success('Created successfully');
-      console.info(response);
+      if (createTenderResponse?.data?.ID) {
+        router.push(`/tenders/${createTenderResponse.data.ID}`);
+      }
     } catch (error) {
       toast.error('Something happened');
     }
   };
 
   return (
-    <>
+    <PrivatePageContext>
       <Head>
         {renderCommonMetaTags(
           'rfq-cres',
@@ -132,7 +169,11 @@ const CreateTenderPage: FC<IProps> = ({
                         name="SupplyCategories"
                         control={control}
                         render={({ field }) => (
-                          <Select {...field} options={supplyCategories} />
+                          <Select
+                            isMulti
+                            {...field}
+                            options={supplyCategories}
+                          />
                         )}
                       />
                       {errors.SupplyCategories && (
@@ -207,7 +248,7 @@ const CreateTenderPage: FC<IProps> = ({
           </SectionWithContainer>
         </motion.div>
       </MainLayout>
-    </>
+    </PrivatePageContext>
   );
 };
 

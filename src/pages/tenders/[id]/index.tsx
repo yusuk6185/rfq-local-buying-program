@@ -10,6 +10,7 @@ import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
 import Navbar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
+import { useAuth } from 'contexts/authContext';
 import { ITender } from 'models/ITender';
 
 import MainLayout from '../../../layouts/MainLayout';
@@ -22,6 +23,7 @@ interface IProps {
 
 const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { query } = useRouter();
+  const { user } = useAuth();
 
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
@@ -84,16 +86,18 @@ const ProjectDetailPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                       Contact the company
                     </Button>
                   </Col>
-                  <Col md="auto">
-                    <Link
-                      href={`/tenders/${query.id}/create-proposal`}
-                      passHref
-                    >
-                      <Button as="a" size="sm" variant="success">
-                        Submit a quote
-                      </Button>
-                    </Link>
-                  </Col>
+                  {user?.Supplier_ID && (
+                    <Col md="auto">
+                      <Link
+                        href={`/tenders/${query.id}/create-proposal`}
+                        passHref
+                      >
+                        <Button as="a" size="sm" variant="success">
+                          Submit a quote
+                        </Button>
+                      </Link>
+                    </Col>
+                  )}
                 </Row>
               </Col>
             </Row>

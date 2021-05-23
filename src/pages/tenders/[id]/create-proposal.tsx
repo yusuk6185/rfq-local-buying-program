@@ -1,12 +1,15 @@
 import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
+import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 import request from 'utils/request';
 
@@ -65,6 +68,7 @@ const CreateProposalPage: FC<IProps> = ({
     formState: { errors },
   } = useForm();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   if (statusCode) {
     return <ErrorPage statusCode={statusCode} />;
   }
@@ -72,13 +76,19 @@ const CreateProposalPage: FC<IProps> = ({
   async function onSubmit(values: any) {
     setLoading(true);
     try {
-      const response = await request.post('/proposal', {
-        Tender_ID: tender.ID,
-        ...values,
-      });
-      console.info(response);
+      const { data: createProposalResponse } = await realRequest.post(
+        '/api/proposals',
+        {
+          Tender_ID: tender.ID,
+          ...values,
+        },
+      );
+      toast.success('Created successfully');
+      if (createProposalResponse?.data?.ID) {
+        router.push(`/tenders/${createProposalResponse.data.ID}`);
+      }
     } catch (error) {
-      console.error(error);
+      toast.error('Something happened');
     }
     setLoading(false);
   }

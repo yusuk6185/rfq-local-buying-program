@@ -87,14 +87,20 @@ const HomePage: FC<IProps> = ({
               <h4>What are you looking for?</h4>
             </div>
             <Row className="justify-content-center">
-              <Col md="auto">
-                <Link href="/subscribe?type=buyer">
-                  <Button as="a">Subscribe as a Buyer</Button>
+              <Col md="auto" className="mb-3 mb-md-0">
+                <Link href="/subscribe?type=buyer" passHref>
+                  <Button className="col-12 col-md-auto" as="a">
+                    Subscribe as a Buyer
+                  </Button>
                 </Link>
               </Col>
               <Col md="auto">
-                <Link href="/subscribe?type=supplier">
-                  <Button variant="success">
+                <Link href="/subscribe?type=supplier" passHref>
+                  <Button
+                    className="col-12 col-md-auto"
+                    as="a"
+                    variant="success"
+                  >
                     Subscribe as a Local Business
                   </Button>
                 </Link>
@@ -109,7 +115,7 @@ const HomePage: FC<IProps> = ({
                   <Link href={`/tenders/${tender.ID}`} passHref>
                     <Button
                       variant="link"
-                      className="p-0 text-dark text-left radius-0"
+                      className="p-0 text-dark text-left radius-0 w-100"
                       as="a"
                     >
                       <TenderDetailCard tender={tender} />
