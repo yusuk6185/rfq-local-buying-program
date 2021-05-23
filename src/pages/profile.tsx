@@ -1,98 +1,68 @@
-import { GetStaticProps } from 'next';
-import ErrorPage from 'next/error';
 import Head from 'next/head';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
+import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
+import BuyerProfile from 'components/BuyerProfile/BuyerProfile';
 import SupplierProfile from 'components/SupplierProfile/SupplierProfile';
+import { IBuyer } from 'models/IBuyer';
 import { ISupplier } from 'models/ISupplier';
 
+import { useAuth } from '../contexts/authContext';
 import MainLayout from '../layouts/MainLayout';
-
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    // const api = fetcherNextJSAPI();
-    // const [] = await Promise.all([
-    //   // TODO: Add the requests
-    // ]);
-    const supplier: ISupplier = {
-      ABN: '21321',
-      ID: 1,
-      Name: 'Name',
-      Logo:
-        'https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80',
-      Description: 'Description',
-      State_ID: 1,
-      State: {
-        ID: 1,
-        Name: 'City',
-        Acronym: 'CIT',
-      },
-      City_ID: 1,
-      City: {
-        ID: 1,
-        Name: 'Cool City',
-        State_ID: 1,
-      },
-      SupplyCategories: [
-        {
-          ID: 1,
-          Name: 'Name',
-          Description: 'Name',
-        },
-        {
-          ID: 1,
-          Name: 'Name',
-          Description: 'Other Name',
-        },
-      ],
-      DeletedAt: '2022-03-01',
-      CreatedAt: '2022-03-01',
-      UpdatedAt: '2022-03-01',
-    };
-    return {
-      props: {
-        supplier,
-      },
-      revalidate: 60, // time in seconds
-    };
-  } catch (error) {
-    console.error('[ERROR]', error);
-    return {
-      props: {
-        statusCode: error.status || null,
-      },
-      revalidate: 1, // time in seconds
-    };
-  }
-};
 
 interface IProps {
   statusCode?: number;
   host: string;
-  supplier: ISupplier;
 }
 
-const MyProfilePage: FC<IProps> = ({
-  supplier,
-  statusCode = null,
-  host = '',
-}) => {
-  if (statusCode || !supplier) {
-    return <ErrorPage statusCode={statusCode || 400} />;
-  }
+const MyProfilePage: FC<IProps> = ({ host = '' }) => {
+  const { user } = useAuth();
+  const [buyer, setBuyer] = useState<IBuyer | undefined>();
+  // {
+  // ID: 1,
+  // Name: 'Test Name',
+  // ABN: '123123',
+  // Logo: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80',
+  // State_ID: 2,
+  // City_ID: 2,
+  // CreatedAt: '2021-05-01',
+  // }
+  const [supplier, setSupplier] = useState<ISupplier | undefined>();
+  useEffect(() => {
+    (async () => {
+      try {
+        if (user?.Buyer_ID) {
+          const { data: responseBuyer } = await realRequest(
+            `/api/buyers/${user.Buyer_ID}`,
+          );
+          setBuyer(responseBuyer);
+        }
+        if (user?.Supplier_ID) {
+          const { data: responseSupplier } = await realRequest(
+            `/api/suppliers/${user.Supplier_ID}`,
+          );
+          setSupplier(responseSupplier);
+        }
+      } catch {
+        toast.error('There was an error.');
+      }
+    })();
+  }, []);
+
   return (
     <>
       <Head>
         {renderCommonMetaTags(
-          'rfq-cres - Subscribe Page',
-          'Subscribe Page - Description',
+          'rfq-cres - My Profile Page',
+          'My Profile Page - Description',
           undefined,
           `${host}/`,
           undefined,
-          'Subscribe Page',
+          'My Profile Page',
           undefined,
         )}
       </Head>
@@ -104,7 +74,10 @@ const MyProfilePage: FC<IProps> = ({
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
-          <SupplierProfile supplier={supplier} />
+          {supplier && <SupplierProfile supplier={supplier} />}
+          {buyer && (
+            <BuyerProfile buyer={buyer} tenders={buyer.Tenders || []} />
+          )}
         </motion.div>
       </MainLayout>
     </>
