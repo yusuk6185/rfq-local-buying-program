@@ -75,6 +75,19 @@ const handler = nextConnect().post(
           .status(500)
           .json({ success: false, message: 'Cannot create user' });
       }
+    } else if (Type === 'user') {
+      try {
+        const result = await pool.query(
+          `INSERT INTO "User" ("Name", "Password", "Email", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${moment().format(
+            'YYYY-MM-DD',
+          )}');`,
+        );
+        if (result) return res.status(200).json({ succes: true });
+      } catch (err) {
+        return res
+          .status(500)
+          .json({ success: false, message: 'Cannot create user' });
+      }
     }
     return res.status(500).json({ message: 'something resally wrong' });
   },

@@ -25,7 +25,8 @@ const TenderDetailCard: FC<IProps> = ({ tender, className, ...props }) => {
         <img
           src={tender.HeadingImage}
           alt={tender.Title}
-          className="radius-sm overflow-hidden"
+          className="radius-sm overflow-hidden object-fit-contain w-100"
+          style={{ height: '200px' }}
         />
         <div className="position-absolute p-2 left-0 bottom-0">
           {(tender.SupplyCategories || []).map(supplyCategory => (

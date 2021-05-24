@@ -6,6 +6,9 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { Button } from 'react-bootstrap';
+
+import cx from 'classnames';
 
 export interface FormControlFileProps extends HTMLProps<HTMLInputElement> {
   onChange?(value: any): any;
@@ -16,6 +19,8 @@ export interface FormControlFileProps extends HTMLProps<HTMLInputElement> {
 const FormControlFile: FC<FormControlFileProps> = ({
   onChange = () => {},
   value,
+  label = 'Select an image',
+  className,
   ...props
 }) => {
   const [reader, setReader] = useState<FileReader>();
@@ -57,7 +62,15 @@ const FormControlFile: FC<FormControlFileProps> = ({
 
   return (
     <>
-      <input type="file" onChange={handleOnChange} {...props} />
+      <Button className={cx('d-block', className)} as="label">
+        {label}
+        <input
+          type="file"
+          onChange={handleOnChange}
+          className={cx(className, 'd-none')}
+          {...props}
+        />
+      </Button>
       {value && <div>{value && <img alt="preview" src={value} />}</div>}
     </>
   );

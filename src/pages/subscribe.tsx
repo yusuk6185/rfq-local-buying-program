@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 // eslint-disable-next-line import/no-unresolved
 import { Except } from 'type-fest';
+import realRequest from 'utils/realRequest';
 
 import FormControlFile from 'components/FormControlFile/FormControlFile';
 import FormGroupWithLabelAndControl from 'components/FormGroupWithLabelAndControl/FormGroupWithLabelAndControl';
@@ -18,9 +19,7 @@ import SectionWithContainer from 'components/SectionWithContainer/SectionWithCon
 import { useAuth } from 'contexts/authContext';
 import { ICity } from 'models/ICity';
 import { IState } from 'models/IState';
-import { ISupplier } from 'models/ISupplier';
 import { ISupplyCategory } from 'models/ISupplyCategory';
-import { ITender } from 'models/ITender';
 
 import MainLayout from '../layouts/MainLayout';
 import renderCommonMetaTags from '../utils/renderCommonMetaTags';
@@ -28,8 +27,9 @@ import renderCommonMetaTags from '../utils/renderCommonMetaTags';
 interface IProps {
   statusCode?: number;
   host: string;
-  tenders: ITender[];
-  suppliers: ISupplier[];
+  states: IState[];
+  cities: ICity[];
+  supplyCategories: ISupplyCategory[];
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -38,9 +38,29 @@ export const getStaticProps: GetStaticProps = async () => {
     // const [] = await Promise.all([
     //   // TODO: Add the requests
     // ]);
+    const [
+      {
+        data: { items: cities },
+      },
+      {
+        data: { items: states },
+      },
+      {
+        data: { items: supplyCategories },
+      },
+    ] = await Promise.all([
+      realRequest('/api/cities'),
+      realRequest('/api/states'),
+      realRequest('/api/supply_categories'),
+    ]);
+
     return {
-      props: {},
-      revalidate: 60, // time in seconds
+      props: {
+        cities,
+        states,
+        supplyCategories,
+      },
+      revalidate: 10, // time in seconds
     };
   } catch (error) {
     console.error('[ERROR]', error);
@@ -121,9 +141,8 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
         rules={{ required: true }}
         render={({ field }) => (
           <FormGroupWithLabelAndSelect
-            {...field}
             label="Supply Categories"
-            selectProps={{ options: supplyCategories }}
+            selectProps={{ options: supplyCategories, isMulti: true, ...field }}
           />
         )}
       />
@@ -134,10 +153,10 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
         rules={{ required: true }}
         render={({ field }) => (
           <FormGroupWithLabelAndSelect
-            {...field}
             label="State"
             selectProps={{
               options: states,
+              ...field,
             }}
           />
         )}
@@ -149,10 +168,10 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
         rules={{ required: true }}
         render={({ field }) => (
           <FormGroupWithLabelAndSelect
-            {...field}
             label="City"
             selectProps={{
               options: cities,
+              ...field,
             }}
           />
         )}
@@ -215,7 +234,13 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
   );
 };
 
-const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
+const SubscribePage: FC<IProps> = ({
+  supplyCategories,
+  cities,
+  states,
+  statusCode = null,
+  host = '',
+}) => {
   const { query } = useRouter();
   const [loading, setLoading] = useState(false);
   const type = query.type as SubscribePageTypes;
@@ -231,6 +256,9 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
       await createUser({
         ...value,
         Type: type,
+        SupplyCategories: (value.SupplyCategories || []).map(({ ID }) => ID),
+        State_ID: value.State_ID?.ID,
+        City_ID: value.City_ID?.ID,
       });
       toast.success('Created with success!', {
         position: 'top-right',
@@ -281,6 +309,9 @@ const SubscribePage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                       />
                     ) : (
                       <SupplierSubscribeForm
+                        cities={cities}
+                        states={states}
+                        supplyCategories={supplyCategories}
                         loading={loading}
                         onSubmit={onSubmit}
                       />

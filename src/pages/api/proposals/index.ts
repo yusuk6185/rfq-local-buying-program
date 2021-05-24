@@ -4,6 +4,8 @@ import nextConnect from 'next-connect';
 import moment from 'moment';
 import pool from 'utils/db';
 
+import authUserMiddleware from '../../../middlewares/authUserMiddleware';
+
 const createProposal = async (
   Tender_ID: number,
   Supplier_ID: number,
@@ -11,10 +13,10 @@ const createProposal = async (
   Offer: any,
 ) =>
   pool.query(
-    `INSERT INTO "Proposal" ("Tender_ID", "Supplier_ID", "Description", "Offer", "ApprovedAt", "CreatedAt")
+    `INSERT INTO "Proposal" ("Tender_ID", "Supplier_ID", "Description", "Offer", "CreatedAt")
      VALUES ('${Tender_ID}', '${Supplier_ID}', '${Description}', ${Offer}, '${moment().format(
       'YYYY-MM-DD',
-    )}', '${moment().format('YYYY-MM-DD')}')
+    )}')
      RETURNING "ID"`,
   );
 
@@ -25,6 +27,7 @@ const createProposalAttachment = async (ID: number, URL: string) =>
   );
 
 const handler = nextConnect()
+  .use(authUserMiddleware())
   .get((req: NextApiRequest, res: NextApiResponse) => {
     pool
       .query(`SELECT * FROM "Proposal"`)
@@ -45,9 +48,13 @@ const handler = nextConnect()
       });
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { Tender_ID, Supplier_ID, Description, Offer } = req.body;
+    const { Description, Offer, Tender_ID } = req.body;
+    const Supplier_ID = req.user?.Supplier_ID;
     let result = null;
     try {
+      if (!Supplier_ID) {
+        throw new Error('Only Supplier can add a proposal!');
+      }
       result = await createProposal(Tender_ID, Supplier_ID, Description, Offer);
     } catch (err) {
       return res.status(500).json({
@@ -57,15 +64,16 @@ const handler = nextConnect()
       });
     }
 
-    if (result.rowCount > 0) {
-      const ProposalID = result.rows[0].ID;
-      const { ProposalAttachment } = req.body;
+    const ProposalID = result.rows[0].ID;
+    const { ProposalAttachment: ProposalAttachments } = req.body;
+
+    if (ProposalAttachments !== undefined && ProposalAttachments.length > 0) {
       try {
-        ProposalAttachment.map(async (attachment: any) => {
-          result = await createProposalAttachment(ProposalID, attachment.URL);
-          return result;
-        });
-        return res.status(200).json({ success: true, ProposalID });
+        await Promise.all(
+          ProposalAttachments.map(async (attachment: any) => {
+            return createProposalAttachment(ProposalID, attachment.URL);
+          }),
+        );
       } catch (err) {
         return res.status(500).json({
           success: false,
@@ -74,9 +82,14 @@ const handler = nextConnect()
         });
       }
     }
-    return res
-      .status(500)
-      .json({ succes: false, message: 'Create Proposal not successful' });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...req.body,
+        ID: ProposalID,
+      },
+    });
   });
 
 export default handler;

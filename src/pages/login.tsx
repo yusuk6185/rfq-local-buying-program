@@ -101,8 +101,25 @@ const LoginPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                       </Button>
                       <p className="text-center">
                         Don't you have an account? <br />
-                        <Link href="/subscribe" passHref>
-                          <a>Create one!</a>
+                        <Link href="/subscribe?type=buyer" passHref>
+                          <Button
+                            as="a"
+                            variant="link"
+                            size="sm"
+                            className="d-block"
+                          >
+                            Subscribe as a Buyer
+                          </Button>
+                        </Link>
+                        <Link href="/subscribe?type=supplier" passHref>
+                          <Button
+                            as="a"
+                            variant="link"
+                            size="sm"
+                            className="d-block"
+                          >
+                            Subscribe as a Supplier
+                          </Button>
                         </Link>
                       </p>
                     </Form>

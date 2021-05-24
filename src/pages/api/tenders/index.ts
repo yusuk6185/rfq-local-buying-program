@@ -4,6 +4,8 @@ import nextConnect from 'next-connect';
 import moment from 'moment';
 import pool from 'utils/db';
 
+import authUserMiddleware from '../../../middlewares/authUserMiddleware';
+
 const createTender = async (
   Buyer_ID: number,
   Description: string,
@@ -15,21 +17,23 @@ const createTender = async (
   ClosingAt: Date,
 ) =>
   pool.query(
-    `INSERT INTO "Tender" ("Buyer_ID", "PublishedAt", "Description", "Title", "HeadingImage", "State_ID", "City_ID", "Offer", "CreatedAt", "ClosingAt")
-       VALUES ('${Buyer_ID}', '${moment().format(
+    `INSERT INTO "Tender" ("Buyer_ID", "ClosingAt", "Description", "State_ID", "City_ID", "Title", "HeadingImage", "Offer", "CreatedAt", "PublishedAt")
+      VALUES ('${Buyer_ID}', '${ClosingAt}', '${Description}', '${State_ID}', '${City_ID}', '${Title}', '${HeadingImage}', '${Offer}', '${moment().format(
       'YYYY-MM-DD',
-    )}', '${Description}', '${Title}', '${HeadingImage}', ${State_ID}, ${City_ID}, ${Offer}, '${moment().format(
-      'YYYY-MM-DD',
-    )}', '${ClosingAt}') RETURNING "ID"`,
+    )}', '${moment().format('YYYY-MM-DD')}')
+      RETURNING "ID";`,
   );
 
 const createTenderAttachment = async (ID: number, URL: string) =>
   pool.query(
     `INSERT INTO "TenderAttachment" ("Tender_ID", "URL")
-   VALUES ('${ID}', '${URL}')`,
+   VALUES ('${ID}', '${URL}')
+   RETURNING "ID";
+   `,
   );
 
 const handler = nextConnect()
+  .use(authUserMiddleware())
   .get((req: NextApiRequest, res: NextApiResponse) => {
     pool
       .query(`SELECT * FROM "Tender"`)
@@ -51,18 +55,21 @@ const handler = nextConnect()
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const {
-      Buyer_ID,
       Description,
       Title,
-      HeadingImage,
       State_ID,
       City_ID,
       Offer,
       ClosingAt,
     } = req.body;
-    let result = null;
+    const Buyer_ID = req.user?.Buyer_ID;
+    const { HeadingImage } = req.body || '';
+    let tenderResult = null;
     try {
-      result = await createTender(
+      if (!Buyer_ID) {
+        throw new Error('The User must be an Buyer!');
+      }
+      tenderResult = await createTender(
         Buyer_ID,
         Description,
         Title,
@@ -80,14 +87,16 @@ const handler = nextConnect()
       });
     }
 
-    if (result.rowCount > 0) {
-      const TenderID = result.rows[0].ID;
-      const { TenderAttachment } = req.body;
+    const { TenderAttachment: TenderAttachments } = req.body;
+    const TenderID = tenderResult.rows[0].ID;
+
+    if (TenderAttachments !== undefined && TenderAttachments.length > 0) {
       try {
-        result = TenderAttachment.map(async (attachment: any) => {
-          result = await createTenderAttachment(TenderID, attachment.URL);
-        });
-        return res.status(200).json({ success: true, TenderID });
+        await Promise.all(
+          TenderAttachments.map(async (attachment: any) => {
+            return createTenderAttachment(TenderID, attachment.URL);
+          }),
+        );
       } catch (err) {
         return res.status(500).json({
           success: false,
@@ -96,9 +105,14 @@ const handler = nextConnect()
         });
       }
     }
-    return res
-      .status(500)
-      .json({ succes: false, message: 'Tender creation not successful' });
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        ...req.body,
+        ID: TenderID,
+      },
+    });
   });
 
 export default handler;

@@ -21,16 +21,16 @@ interface IProps {
 
 const MyProfilePage: FC<IProps> = ({ host = '' }) => {
   const { user } = useAuth();
-  const [buyer, setBuyer] = useState<IBuyer | undefined>();
-  // {
-  // ID: 1,
-  // Name: 'Test Name',
-  // ABN: '123123',
-  // Logo: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80',
-  // State_ID: 2,
-  // City_ID: 2,
-  // CreatedAt: '2021-05-01',
-  // }
+  const [buyer, setBuyer] = useState<IBuyer | undefined>({
+    ID: 1,
+    Name: 'Test Name',
+    ABN: '123123',
+    Logo:
+      'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80',
+    State_ID: 2,
+    City_ID: 2,
+    CreatedAt: '2021-05-01',
+  });
   const [supplier, setSupplier] = useState<ISupplier | undefined>();
   useEffect(() => {
     (async () => {

@@ -19,6 +19,7 @@ const Select: FC<SelectProps> = ({
           return {
             ...controlProps,
             minHeight: '50px',
+            minWidth: '160px',
           };
         },
       }}
