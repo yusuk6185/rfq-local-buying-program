@@ -1,6 +1,8 @@
 import type { ICity } from 'models/ICity';
 import type { IState } from 'models/IState';
 
+import type { ITender } from './ITender';
+
 export interface IBuyer {
   ID: number;
   Name: string;
@@ -14,4 +16,5 @@ export interface IBuyer {
   CreatedAt: string;
   UpdatedAt?: string;
   DeletedAt?: string;
+  Tenders?: ITender[];
 }

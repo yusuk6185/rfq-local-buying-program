@@ -2,6 +2,8 @@ import { ICity } from 'models/ICity';
 import { IState } from 'models/IState';
 import { ISupplyCategory } from 'models/ISupplyCategory';
 
+import { ITender } from './ITender';
+
 export interface ISupplier {
   ID: number;
   Name: string;
@@ -16,4 +18,5 @@ export interface ISupplier {
   State?: IState;
   City_ID: number;
   City?: ICity;
+  Tenders?: ITender[];
 }

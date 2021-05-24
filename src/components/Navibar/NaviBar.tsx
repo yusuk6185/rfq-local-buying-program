@@ -27,9 +27,11 @@ const NaviBar: FC = () => {
             <Link href="/tenders" passHref>
               <Nav.Link className={styles.link}>Tenders</Nav.Link>
             </Link>
-            <Link href="/profile" passHref>
-              <Nav.Link className={styles.link}>My Profile</Nav.Link>
-            </Link>
+            {user && (
+              <Link href="/profile" passHref>
+                <Nav.Link className={styles.link}>My Profile</Nav.Link>
+              </Link>
+            )}
             {user?.Buyer_ID && (
               <Link href="/my/tenders" passHref>
                 <Nav.Link className={styles.link}>My Tenders</Nav.Link>

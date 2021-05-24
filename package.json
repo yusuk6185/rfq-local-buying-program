@@ -80,6 +80,7 @@
     "react-toastify": "^7.0.4",
     "sass": "^1.32.8",
     "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0",
     "short-uuid": "^4.1.0",
     "swr": "^0.5.5",
     "ts-enum-util": "^4.0.2",
