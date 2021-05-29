@@ -5,12 +5,12 @@ import pool from 'utils/db';
 
 const handler = nextConnect().get(
   (req: NextApiRequest, res: NextApiResponse) => {
-    const { ID } = req.body;
+    const { ID } = req.query;
     pool
       .query(`SELECT * FROM "Tender" WHERE "ID"=$1`, [ID])
       .then((result: any) => {
         if (result.rowCount > 0)
-          return res.status(200).json({ success: true, Tender: result.rows });
+          return res.status(200).json({ success: true, data: result.rows[0] });
         return res
           .status(400)
           .json({ success: false, message: 'Tender not exist' });
