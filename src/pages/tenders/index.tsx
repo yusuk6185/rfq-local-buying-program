@@ -8,7 +8,6 @@ import { Button, Form, Col, Row } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
-import request from 'utils/request';
 
 import Navbar from 'components/Navibar/NaviBar';
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
@@ -71,6 +70,7 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
         )}
       </Head>
       <MainLayout>
+        <Navbar />
         <motion.div
           key="my-tenders"
           initial={{ opacity: 0, y: 40 }}
@@ -78,7 +78,6 @@ const TendersPage: FC<IProps> = ({ tenders, statusCode = null, host = '' }) => {
           exit={{ opacity: 0, y: 40 }}
           transition={{ ease: 'easeInOut', duration: 0.3 }}
         >
-          <Navbar />
           <SectionWithContainer>
             <Row className="justify-content-between">
               <Col md="auto">
