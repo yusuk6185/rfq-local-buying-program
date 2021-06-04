@@ -7,7 +7,7 @@ import { Proposal } from '../../../sequelize/models';
 const handler = nextConnect().get(
   withErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
     const { ID } = req.query;
-    const proposal = await Proposal.findByPk(ID, {
+    const proposal = await Proposal.findByPk(ID as string, {
       include: [{ all: true, nested: true }],
     });
     return res.status(200).json({ success: true, data: proposal });

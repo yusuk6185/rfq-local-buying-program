@@ -2,6 +2,7 @@ import { ICity } from 'models/ICity';
 import { IState } from 'models/IState';
 import { ISupplyCategory } from 'models/ISupplyCategory';
 
+import { IUser } from 'models/IUser';
 import { ITender } from './ITender';
 
 export interface ISupplier {
@@ -19,4 +20,6 @@ export interface ISupplier {
   City_ID: number;
   City?: ICity;
   Tenders?: ITender[];
+  User_ID: number;
+  User?: IUser;
 }

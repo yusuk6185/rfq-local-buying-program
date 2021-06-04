@@ -5,7 +5,8 @@ import bcrypt from 'bcrypt';
 import moment from 'moment';
 import pool from 'utils/db';
 
-import { createSupplier, createBuyer } from './user';
+import { Supplier, SupplierHasOneUSer } from '../../../sequelize/models';
+import { createBuyer } from './user';
 
 const checkEmailExist = async (Email: string) => {
   let result = null;
@@ -18,7 +19,15 @@ const checkEmailExist = async (Email: string) => {
 
 const handler = nextConnect().post(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    const { Type, Password, Name, Email, ABN, Logo } = req.body;
+    const {
+      Type,
+      Password,
+      Name,
+      Email,
+      ABN,
+      Logo,
+      SupplyCategories,
+    } = req.body;
     let exists = null;
     try {
       exists = await checkEmailExist(Email);
@@ -35,24 +44,52 @@ const handler = nextConnect().post(
     const hashedPassword = bcrypt.hashSync(Password as string, 10);
     if (Type === 'supplier') {
       const { State_ID, City_ID } = req.body;
-      let SupplierID = null;
-      try {
-        SupplierID = await createSupplier(Name, ABN, Logo, State_ID, City_ID);
-      } catch (err) {
-        return res.status(500).json({ message: 'Something wrong' });
+      const supplier = await Supplier.create(
+        {
+          Name,
+          ABN,
+          Logo,
+          State_ID,
+          City_ID,
+          User: {
+            Name,
+            Password: hashedPassword,
+            Email,
+          },
+        },
+        {
+          include: [
+            {
+              association: SupplierHasOneUSer,
+              as: 'User',
+            },
+          ],
+        },
+      );
+      if ((SupplyCategories || [])?.length) {
+        await supplier.addSupplyCategories(SupplyCategories);
       }
-
-      try {
-        const result = await pool.query(
-          `INSERT INTO "User" ("Name", "Password", "Email", "Supplier_ID", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${SupplierID}', '${moment().format(
-            'YYYY-MM-DD',
-          )}');`,
-        );
-        if (result) res.status(200).json({ success: true });
-      } catch (err) {
-        return res.status(500).json({ err });
-      }
-    } else if (Type === 'buyer') {
+      // supplier.addSupplyCategory
+      return res.status(200).json({ success: true, data: supplier });
+      // let SupplierID = null;
+      // try {
+      //   SupplierID = await createSupplier(Name, ABN, Logo, State_ID, City_ID);
+      // } catch (err) {
+      //   return res.status(500).json({ message: 'Something wrong' });
+      // }
+      //
+      // try {
+      //   const result = await pool.query(
+      //     `INSERT INTO "User" ("Name", "Password", "Email", "Supplier_ID", "CreatedAt") VALUES ('${Name}', '${hashedPassword}', '${Email}', '${SupplierID}', '${moment().format(
+      //       'YYYY-MM-DD',
+      //     )}');`,
+      //   );
+      //   if (result) res.status(200).json({ success: true });
+      // } catch (err) {
+      //   return res.status(500).json({ err });
+      // }
+    }
+    if (Type === 'buyer') {
       let BuyerID = null;
       try {
         BuyerID = await createBuyer(Name, ABN, Logo);

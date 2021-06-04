@@ -7,7 +7,6 @@ import { Button, Col, Row } from 'react-bootstrap';
 
 import { motion } from 'framer-motion';
 import realRequest from 'utils/realRequest';
-import request from 'utils/request';
 
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
 import SupplierDetailCard from 'components/TenderDetailCard/SupplierDetailCard';
@@ -31,10 +30,12 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         data: { items: tenders },
       },
-      { data: suppliers },
+      {
+        data: { items: suppliers },
+      },
     ] = await Promise.all([
-      realRequest.get<{ items: ISupplier[] }>('/api/tenders'),
-      request.get<ISupplier[]>('/suppliers'),
+      realRequest.get<{ items: ITender[] }>('/api/tenders'),
+      realRequest.get<{ items: ISupplier[] }>('/api/suppliers'),
     ]);
     return {
       props: {

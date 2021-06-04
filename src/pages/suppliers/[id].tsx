@@ -1,9 +1,11 @@
 import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 
 import { motion } from 'framer-motion';
+import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
 import SupplierProfile from 'components/SupplierProfile/SupplierProfile';
@@ -13,59 +15,23 @@ import MainLayout from '../../layouts/MainLayout';
 
 export const getStaticPaths = async () => {
   return {
-    paths: [
-      {
-        params: { id: '1' },
-      },
-      {
-        params: { id: '2' },
-      },
-    ],
+    paths: [],
     fallback: true, // See the "fallback" section below
   };
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<any, { id: string }> = async ({
+  params,
+}) => {
   try {
     // const api = fetcherNextJSAPI();
     // const [] = await Promise.all([
     //   // TODO: Add the requests
     // ]);
-    const supplier: ISupplier = {
-      ABN: '21321',
-      ID: 1,
-      Name: 'Name',
-      Logo:
-        'https://images.unsplash.com/photo-1584715787746-75b93b83bf14?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80',
-      Description: 'Description',
-      State_ID: 1,
-      State: {
-        ID: 1,
-        Name: 'City',
-        Acronym: 'CIT',
-      },
-      City_ID: 1,
-      City: {
-        ID: 1,
-        Name: 'Cool City',
-        State_ID: 1,
-      },
-      DeletedAt: '2022-03-01',
-      CreatedAt: '2022-03-01',
-      UpdatedAt: '2022-03-01',
-      SupplyCategories: [
-        {
-          ID: 1,
-          Name: 'Name',
-          Description: 'Name',
-        },
-        {
-          ID: 1,
-          Name: 'Name',
-          Description: 'Other Name',
-        },
-      ],
-    };
+    const {
+      data: { data: supplier },
+    } = await realRequest(`/api/suppliers/${params?.id || '0'}`);
+    // console.log('jashdkaddjhsdhakjhks');
     return {
       props: {
         supplier,
@@ -94,6 +60,10 @@ const SupplierProfilePage: FC<IProps> = ({
   statusCode = null,
   host = '',
 }) => {
+  const { isFallback } = useRouter();
+  if (isFallback) {
+    return <h2>IS Loading</h2>;
+  }
   if (statusCode || !supplier) {
     return <ErrorPage statusCode={statusCode || 400} />;
   }

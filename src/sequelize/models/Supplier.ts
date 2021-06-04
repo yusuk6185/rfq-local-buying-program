@@ -1,17 +1,33 @@
-import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  BuildOptions,
+  DataTypes,
+  HasManyAddAssociationMixin,
+  HasManyAddAssociationsMixin,
+  Model,
+  Sequelize,
+} from 'sequelize';
+import { UserAttributes } from './User';
+import { SupplyCategory } from './SupplyCategory';
 
 export interface SupplierAttributes {
-  ID: number;
+  ID?: number;
   Name: string;
   ABN: string;
   Logo: string;
-  CreatedAt: Date;
+  State_ID?: number;
+  City_ID?: number;
+  CreatedAt?: Date;
   UpdatedAt?: Date;
   DeletedAt?: Date;
+  User?: UserAttributes;
+  SupplyCategories?: SupplyCategory[];
 }
 export interface SupplierModel
   extends Model<SupplierAttributes>,
-    SupplierAttributes {}
+    SupplierAttributes {
+  addSupplyCategory: HasManyAddAssociationMixin<SupplyCategory, number>;
+  addSupplyCategories: HasManyAddAssociationsMixin<SupplyCategory, number>;
+}
 export class Supplier extends Model<SupplierModel, SupplierAttributes> {}
 
 export type SupplierStatic = typeof Model & {

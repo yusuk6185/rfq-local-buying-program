@@ -3,7 +3,7 @@ import ErrorPage from 'next/error';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import {FC, useEffect, useMemo, useState} from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import {
   Badge,
   Button,
@@ -14,6 +14,7 @@ import {
   Table,
   Tabs,
 } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
@@ -30,7 +31,6 @@ import { IProposal } from 'models/IProposal';
 import { ITender } from 'models/ITender';
 
 import MainLayout from '../../../layouts/MainLayout';
-import {toast} from 'react-toastify';
 
 interface IProps {
   statusCode?: number;
@@ -224,7 +224,10 @@ const TenderDetailPage: FC<IProps> = ({
               </Row>
               <hr />
               {user?.Buyer_ID === tender.Buyer_ID ? (
-                <Tabs defaultActiveKey="description" id="uncontrolled-tab-example">
+                <Tabs
+                  defaultActiveKey="description"
+                  id="uncontrolled-tab-example"
+                >
                   <Tab eventKey="description" title="Description">
                     {description}
                   </Tab>
@@ -263,11 +266,10 @@ const TenderDetailPage: FC<IProps> = ({
                                         <img
                                           width={70}
                                           className="mr-2 d-flex img-thumbnail"
-                                          src={proposal.Tender?.Buyer?.Logo}
-                                          alt={proposal.Tender?.Buyer?.Name}
+                                          src={proposal.Supplier?.Logo}
+                                          alt={proposal.Supplier?.Name}
                                         />
-                                        {proposal.Tender?.Buyer?.Name} -{' '}
-                                        {proposal.Tender?.Title}
+                                        {proposal.Supplier?.Name}
                                       </a>
                                     </Link>
                                   </td>

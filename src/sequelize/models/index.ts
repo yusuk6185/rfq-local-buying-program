@@ -4,6 +4,7 @@ import { BuyerFactory } from './Buyer';
 import { CityFactory } from './City';
 import { ProposalFactory } from './Proposal';
 import { ProposalAttachmentFactory } from './ProposalAttachment';
+import { ProposalTenderProductFactory } from './ProposalTenderProduct';
 import { StateFactory } from './State';
 import { SupplierFactory } from './Supplier';
 import { SupplyCategoryFactory } from './SupplyCategory';
@@ -11,7 +12,6 @@ import { TenderFactory } from './Tender';
 import { TenderAttachmentFactory } from './TenderAttachment';
 import { TenderProductFactory } from './TenderProduct';
 import { UserFactory } from './User';
-import {ProposalTenderProductFactory} from './ProposalTenderProduct';
 // import {userFactory} from "./user-model";
 // import {skillsFactory} from "./other-model";
 
@@ -66,7 +66,7 @@ City.belongsTo(State, {
 });
 
 // Supplier
-Supplier.hasOne(User, {
+export const SupplierHasOneUSer = Supplier.hasOne(User, {
   sourceKey: 'ID',
   foreignKey: 'Supplier_ID',
   as: 'User',
@@ -74,13 +74,13 @@ Supplier.hasOne(User, {
   onUpdate: 'CASCADE',
 });
 Supplier.belongsTo(City, {
-  foreignKey: 'ID',
+  foreignKey: 'City_ID',
   as: 'City',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
 Supplier.belongsTo(State, {
-  foreignKey: 'ID',
+  foreignKey: 'State_ID',
   as: 'State',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
@@ -93,11 +93,16 @@ Supplier.hasMany(Proposal, {
   onUpdate: 'CASCADE',
 });
 
-Supplier.belongsToMany(SupplyCategory, {
-  through: 'Supplier_SupplyCategory',
-  foreignKey: 'Supplier_ID',
-  timestamps: false,
-});
+export const SupplierHasSupplyCategories = Supplier.belongsToMany(
+  SupplyCategory,
+  {
+    as: 'SupplyCategories',
+    through: 'Supplier_SupplyCategory',
+    foreignKey: 'Supplier_ID',
+    otherKey: 'SupplyCategory_ID', // replaces `categoryId`
+    timestamps: false,
+  },
+);
 
 // SupplyCategory
 SupplyCategory.hasMany(SupplyCategory, {
@@ -108,7 +113,7 @@ SupplyCategory.hasMany(SupplyCategory, {
   onUpdate: 'CASCADE',
 });
 SupplyCategory.belongsTo(SupplyCategory, {
-  foreignKey: 'ID',
+  foreignKey: 'SupplyCategory_ID',
   as: 'SupplyCategory',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
@@ -116,13 +121,13 @@ SupplyCategory.belongsTo(SupplyCategory, {
 
 // Proposal
 Proposal.belongsTo(Tender, {
-  foreignKey: 'Tender_ID',
+  foreignKey: 'ID',
   as: 'Tender',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
 Proposal.belongsTo(Supplier, {
-  foreignKey: 'Supplier_ID',
+  foreignKey: 'ID',
   as: 'Supplier',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
@@ -153,13 +158,13 @@ Buyer.hasOne(User, {
   onUpdate: 'CASCADE',
 });
 Buyer.belongsTo(City, {
-  foreignKey: 'ID',
+  foreignKey: 'City_ID',
   as: 'City',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
 Buyer.belongsTo(State, {
-  foreignKey: 'ID',
+  foreignKey: 'State_ID',
   as: 'State',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
@@ -232,12 +237,6 @@ Tender.hasMany(Proposal, {
   as: 'Proposals',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
-});
-
-SupplyCategory.belongsToMany(Supplier, {
-  through: 'Supplier_SupplyCategory',
-  foreignKey: 'SupplyCategory_ID',
-  timestamps: false,
 });
 
 ProposalTenderProduct.belongsTo(TenderProduct, {

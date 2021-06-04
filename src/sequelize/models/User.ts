@@ -1,14 +1,14 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
 export interface UserAttributes {
-  ID: number;
+  ID?: number;
   Name: string;
   Email: string;
   Password: string;
   Supplier_ID?: number;
   Buyer_ID?: number;
   DeletedAt?: Date;
-  CreatedAt: Date;
+  CreatedAt?: Date;
   UpdatedAt?: Date;
   Token?: string;
   RefreshToken?: string;

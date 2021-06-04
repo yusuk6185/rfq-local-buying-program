@@ -200,8 +200,8 @@ const CreateProposalPage: FC<IProps> = ({
                             {...register(
                               `ProposalTenderProducts.${index}.TenderProduct_ID`,
                               {
-                                valueAsNumber: true
-                              }
+                                valueAsNumber: true,
+                              },
                             )}
                             value={tenderProduct.ID}
                           />

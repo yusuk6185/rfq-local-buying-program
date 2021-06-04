@@ -118,7 +118,12 @@ const ProposalDetailPage: FC<IProps> = ({
                       </Button>
                     </Col>
                     <Col md="auto">
-                      <Button size="sm" variant="outline-primary">
+                      <Button
+                        as="a"
+                        size="sm"
+                        variant="outline-primary"
+                        href={`mailto:${proposal?.Supplier?.User?.Email}`}
+                      >
                         Contact the local business
                       </Button>
                     </Col>
