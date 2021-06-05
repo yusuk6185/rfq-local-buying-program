@@ -27,7 +27,7 @@
     "start": "next start",
     "db:migrate": "sequelize db:migrate",
     "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|yml|yaml|css|md)\"",
-    "lint": "eslint \"**/*.+(js|jsx|json|ts|tsx)\"",
+    "lint": "eslint \"**/*.+(js|jsx|json|ts|tsx)\" --quiet",
     "lint:fix": "npm run lint -- --fix --quiet",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",

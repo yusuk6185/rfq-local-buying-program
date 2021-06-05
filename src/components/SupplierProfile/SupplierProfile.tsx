@@ -41,17 +41,19 @@ const SupplierProfile: FC<IProps> = ({ supplier }) => {
           </div>
         </Col>
         <Col>
-          <section className="mb-3">
-            <h3>Description</h3>
-            <div dangerouslySetInnerHTML={{ __html: supplier.Description }} />
-          </section>
+          {supplier.Description && (
+            <section className="mb-3">
+              <h3>Description</h3>
+              <div dangerouslySetInnerHTML={{ __html: supplier.Description }} />
+            </section>
+          )}
           <section>
-            <h3>Supply Categories</h3>
+            <h4>Supply Categories</h4>
             <Row>
               {supplier.SupplyCategories?.map(supplyCategory => (
                 <Col key={supplyCategory.ID} md="auto">
                   <Badge variant="primary">
-                    <h4 className="m-0 p-2">{supplyCategory.Name}</h4>
+                    <p className="m-0 p-2">{supplyCategory.Name}</p>
                   </Badge>
                 </Col>
               ))}

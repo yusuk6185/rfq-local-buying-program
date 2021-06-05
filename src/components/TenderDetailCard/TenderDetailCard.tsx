@@ -23,7 +23,10 @@ const TenderDetailCard: FC<IProps> = ({ tender, className, ...props }) => {
       {...props}
     >
       <div className="position-relative mb-2">
-        <div className="radius-sm overflow-hidden" style={{ height: '120px' }}>
+        <div
+          className="radius-sm overflow-hidden position-relative"
+          style={{ height: '100px' }}
+        >
           <Image
             priority
             layout="fill"
@@ -43,20 +46,22 @@ const TenderDetailCard: FC<IProps> = ({ tender, className, ...props }) => {
               pill
               key={supplyCategory.ID}
             >
-              <h5 className="m-0">{supplyCategory.Name}</h5>
+              <p className="m-0">{supplyCategory.Name}</p>
             </Badge>
           ))}
         </div>
       </div>
-      <h3>{tender.Title}</h3>
+      <h3 className="h4">{tender.Title}</h3>
       <Row>
         <Col md={6}>
           <small className="d-flex">Est. Delivery</small>
-          <strong>{moment(tender.ClosingAt).format('DD/MM/YYYY')}</strong>
+          <small className="font-weight-bold">
+            {moment(tender.ClosingAt).format('DD/MM/YYYY')}
+          </small>
         </Col>
         <Col md={6}>
           <small className="d-flex">Posted By</small>
-          <strong>{tender.Buyer?.Name}</strong>
+          <small className="font-weight-bold">{tender.Buyer?.Name}</small>
         </Col>
       </Row>
     </div>

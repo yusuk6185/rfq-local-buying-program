@@ -66,7 +66,7 @@ City.belongsTo(State, {
 });
 
 // Supplier
-export const SupplierHasOneUSer = Supplier.hasOne(User, {
+export const SupplierHasOneUser = Supplier.hasOne(User, {
   sourceKey: 'ID',
   foreignKey: 'Supplier_ID',
   as: 'User',
@@ -92,17 +92,13 @@ Supplier.hasMany(Proposal, {
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
-
-export const SupplierHasSupplyCategories = Supplier.belongsToMany(
-  SupplyCategory,
-  {
-    as: 'SupplyCategories',
-    through: 'Supplier_SupplyCategory',
-    foreignKey: 'Supplier_ID',
-    otherKey: 'SupplyCategory_ID', // replaces `categoryId`
-    timestamps: false,
-  },
-);
+Supplier.belongsToMany(SupplyCategory, {
+  as: 'SupplyCategories',
+  through: 'Supplier_SupplyCategory',
+  foreignKey: 'Supplier_ID',
+  otherKey: 'SupplyCategory_ID', // replaces `categoryId`
+  timestamps: false,
+});
 
 // SupplyCategory
 SupplyCategory.hasMany(SupplyCategory, {
@@ -121,13 +117,14 @@ SupplyCategory.belongsTo(SupplyCategory, {
 
 // Proposal
 Proposal.belongsTo(Tender, {
-  foreignKey: 'ID',
+  foreignKey: 'Tender_ID',
   as: 'Tender',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
 });
+
 Proposal.belongsTo(Supplier, {
-  foreignKey: 'ID',
+  foreignKey: 'Supplier_ID',
   as: 'Supplier',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
@@ -150,7 +147,7 @@ export const ProposalTenderProducts = Proposal.hasMany(ProposalTenderProduct, {
 });
 
 // Buyer
-Buyer.hasOne(User, {
+export const BuyerHasOneUser = Buyer.hasOne(User, {
   sourceKey: 'ID',
   foreignKey: 'Buyer_ID',
   as: 'User',
@@ -178,21 +175,21 @@ Buyer.hasMany(Tender, {
 });
 
 // User
-User.hasOne(Buyer, {
-  sourceKey: 'Buyer_ID',
-  foreignKey: 'ID',
-  as: 'Buyer',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-
-User.hasOne(Supplier, {
-  sourceKey: 'Supplier_ID',
-  foreignKey: 'ID',
-  as: 'Supplier',
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
+// User.hasOne(Buyer, {
+//   sourceKey: 'Buyer_ID',
+//   foreignKey: 'ID',
+//   as: 'Buyer',
+//   onDelete: 'CASCADE',
+//   onUpdate: 'CASCADE',
+// });
+//
+// User.hasOne(Supplier, {
+//   sourceKey: 'Supplier_ID',
+//   foreignKey: 'ID',
+//   as: 'Supplier',
+//   onDelete: 'CASCADE',
+//   onUpdate: 'CASCADE',
+// });
 
 // Tender
 Tender.belongsTo(Buyer, {
@@ -237,6 +234,14 @@ Tender.hasMany(Proposal, {
   as: 'Proposals',
   onDelete: 'CASCADE',
   onUpdate: 'CASCADE',
+});
+
+Tender.belongsToMany(SupplyCategory, {
+  as: 'SupplyCategories',
+  through: 'Tender_SupplyCategory',
+  foreignKey: 'Tender_ID',
+  otherKey: 'SupplyCategory_ID', // replaces `categoryId`
+  timestamps: false,
 });
 
 ProposalTenderProduct.belongsTo(TenderProduct, {

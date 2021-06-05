@@ -1,13 +1,19 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
+import { UserAttributes } from './User';
+
 export interface BuyerAttributes {
-  ID: number;
+  ID?: number;
   Name: string;
   ABN: string;
   Logo: string;
-  CreatedAt: Date;
+  Description?: string;
+  State_ID?: number;
+  City_ID?: number;
+  CreatedAt?: Date;
   UpdatedAt?: Date;
   DeletedAt?: Date;
+  User?: UserAttributes;
 }
 export interface BuyerModel extends Model<BuyerAttributes>, BuyerAttributes {}
 export class Buyer extends Model<BuyerModel, BuyerAttributes> {}
@@ -25,6 +31,10 @@ export function BuyerFactory(sequelize: Sequelize): BuyerStatic {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      Description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
       },
       Name: {
         type: DataTypes.STRING,

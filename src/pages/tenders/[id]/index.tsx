@@ -14,10 +14,12 @@ import {
   Table,
   Tabs,
 } from 'react-bootstrap';
+import { FaMapPin } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
+import currencyFormat from 'utils/curencyFormat';
 import getStatusProposal from 'utils/getStatusProposal';
 import getVariantByStatus from 'utils/getVariantByStatus';
 import realRequest from 'utils/realRequest';
@@ -88,33 +90,81 @@ const TenderDetailPage: FC<IProps> = ({
 
   const description = useMemo(
     () => (
-      <>
-        <div
-          className="pt-4"
-          dangerouslySetInnerHTML={{ __html: tender.Description }}
-        />
-        <div>
-          <hr />
-          <h4 className="mb-3 font-weight-bold">Products Required</h4>
-          <ul className="pl-0">
-            {(tender.TenderProducts || []).map(tenderProduct => (
-              <li key={tenderProduct.ID} className="mb-3">
-                <Card body>
-                  <Row className="align-items-center justify-content-between">
-                    <Col>
-                      <h3 className="m-0">{tenderProduct.Name}</h3>
-                    </Col>
-                    <Col md="auto">
-                      <strong className="mr-2">Quantity:</strong>
-                      <span>{tenderProduct.Quantity}</span>
-                    </Col>
-                  </Row>
-                </Card>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </>
+      <div className="pt-4">
+        <Row className="justify-content-between mb-3">
+          <Col className="flex-grow-0">
+            <h4 className="font-weight-bold">
+              <FaMapPin /> {tender.City?.Name}, {tender.State?.Name}
+            </h4>
+          </Col>
+          <Col md="auto">
+            <Row>
+              <Col md="auto">
+                <Button size="sm" variant="outline-info">
+                  Attachments
+                </Button>
+              </Col>
+              {tender.Buyer?.User?.Email && (
+                <Col md="auto">
+                  <Button
+                    size="sm"
+                    variant="outline-primary"
+                    as="a"
+                    href={`mailto:${tender.Buyer.User.Email}`}
+                  >
+                    Contact the company
+                  </Button>
+                </Col>
+              )}
+              {user?.Supplier_ID && (
+                <Col md="auto">
+                  <Link href={`/tenders/${query.id}/create-proposal`} passHref>
+                    <Button as="a" size="sm" variant="success">
+                      Submit a quote
+                    </Button>
+                  </Link>
+                </Col>
+              )}
+            </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={6}>
+            <Row className="mb-2">
+              {(tender.SupplyCategories || [])?.map(supplyCategory => (
+                <Col key={supplyCategory.ID} md="auto">
+                  <Badge variant="primary">
+                    <p className="m-0 p-2">{supplyCategory.Name}</p>
+                  </Badge>
+                </Col>
+              ))}
+            </Row>
+            <div dangerouslySetInnerHTML={{ __html: tender.Description }} />
+          </Col>
+          <Col md={6}>
+            <Card body>
+              <h4 className="mb-3 font-weight-bold">Products Required</h4>
+              <ul className="list-style-type-none pl-0 mb-n3">
+                {(tender.TenderProducts || []).map(tenderProduct => (
+                  <li key={tenderProduct.ID} className="mb-3">
+                    <Card body>
+                      <Row className="align-items-center justify-content-between">
+                        <Col>
+                          <h3 className="m-0">{tenderProduct.Name}</h3>
+                        </Col>
+                        <Col md="auto">
+                          <strong className="mr-2">Quantity:</strong>
+                          <span>{tenderProduct.Quantity}</span>
+                        </Col>
+                      </Row>
+                    </Card>
+                  </li>
+                ))}
+              </ul>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     ),
     [tender.Description, tender.TenderProducts],
   );
@@ -186,45 +236,6 @@ const TenderDetailPage: FC<IProps> = ({
           </div>
           <SectionWithContainer>
             <RowWithOffsetCol>
-              <Row className="justify-content-between mb-4">
-                <Col className="flex-grow-0">
-                  <h4 className="font-weight-bold">Description</h4>
-                </Col>
-                <Col md="auto">
-                  <Row>
-                    <Col md="auto">
-                      <Button size="sm" variant="outline-info">
-                        Attachments
-                      </Button>
-                    </Col>
-                    {tender.Buyer?.User?.Email && (
-                      <Col md="auto">
-                        <Button
-                          size="sm"
-                          variant="outline-primary"
-                          as="a"
-                          href={`mailto:${tender.Buyer.User.Email}`}
-                        >
-                          Contact the company
-                        </Button>
-                      </Col>
-                    )}
-                    {user?.Supplier_ID && (
-                      <Col md="auto">
-                        <Link
-                          href={`/tenders/${query.id}/create-proposal`}
-                          passHref
-                        >
-                          <Button as="a" size="sm" variant="success">
-                            Submit a quote
-                          </Button>
-                        </Link>
-                      </Col>
-                    )}
-                  </Row>
-                </Col>
-              </Row>
-              <hr />
               {user?.Buyer_ID === tender.Buyer_ID ? (
                 <Tabs
                   defaultActiveKey="description"
@@ -235,17 +246,22 @@ const TenderDetailPage: FC<IProps> = ({
                   </Tab>
                   <Tab eventKey="proposals" title="Proposals">
                     <div className="pt-4">
-                      <Table borderless>
+                      <Table hover responsive size="sm">
                         <thead>
                           <th>COMPANY NAME</th>
                           {(tender.TenderProducts || [])
-                            .sort(({ ID }) => ID)
+                            .sort((a, b) => (a.ID > b.ID ? 1 : -1))
                             .map(tenderProduct => (
-                              <th key={tenderProduct.ID}>
+                              <th
+                                className="align-middle text-right"
+                                key={tenderProduct.ID}
+                              >
                                 {tenderProduct.Name} PRICE
                               </th>
                             ))}
-                          <th>SUBMITTED AT</th>
+                          <th className="align-middle text-right">
+                            SUBMITTED AT
+                          </th>
                           <th />
                         </thead>
                         <tbody>
@@ -266,7 +282,7 @@ const TenderDetailPage: FC<IProps> = ({
                                     >
                                       <a className="d-flex align-items-center">
                                         <img
-                                          width={70}
+                                          width={50}
                                           className="mr-2 d-flex img-thumbnail"
                                           src={proposal.Supplier?.Logo}
                                           alt={proposal.Supplier?.Name}
@@ -276,21 +292,27 @@ const TenderDetailPage: FC<IProps> = ({
                                     </Link>
                                   </td>
                                   {(proposal.ProposalTenderProducts || [])
-                                    .sort(
-                                      ({ TenderProduct_ID }) =>
-                                        TenderProduct_ID,
+                                    .sort((a, b) =>
+                                      a.TenderProduct_ID > b.TenderProduct_ID
+                                        ? 1
+                                        : -1,
                                     )
                                     .map(proposalTenderProduct => (
-                                      <td key={proposalTenderProduct.ID}>
-                                        {proposalTenderProduct.Offer}
+                                      <td
+                                        className="align-middle text-right"
+                                        key={proposalTenderProduct.ID}
+                                      >
+                                        {currencyFormat(
+                                          proposalTenderProduct.Offer,
+                                        )}
                                       </td>
                                     ))}
-                                  <td>
+                                  <td className="align-middle text-right">
                                     {moment(proposal.CreatedAt).format(
                                       'DD/MM/YYYY',
                                     )}
                                   </td>
-                                  <td>
+                                  <td className="align-middle">
                                     <Badge
                                       variant={`outline-${variantByStatus}`}
                                     >

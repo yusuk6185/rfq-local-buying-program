@@ -1,7 +1,15 @@
-import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  BuildOptions,
+  DataTypes,
+  HasManyAddAssociationMixin,
+  HasManyAddAssociationsMixin,
+  Model,
+  Sequelize,
+} from 'sequelize';
 
-import { TenderProduct } from './TenderProduct';
 import { Proposal } from './Proposal';
+import { SupplyCategory } from './SupplyCategory';
+import { TenderProduct } from './TenderProduct';
 
 export interface TenderAttributes {
   ID?: number;
@@ -10,6 +18,7 @@ export interface TenderAttributes {
   ClosingAt?: Date;
   Title: string;
   Description: string;
+  HeadingImage: string;
   State_ID?: number;
   City_ID?: number;
   DeletedAt?: Date;
@@ -18,9 +27,10 @@ export interface TenderAttributes {
   TenderProducts?: TenderProduct[];
   Proposals?: Proposal[];
 }
-export interface TenderModel
-  extends Model<TenderAttributes>,
-    TenderAttributes {}
+export interface TenderModel extends Model<TenderAttributes>, TenderAttributes {
+  addSupplyCategory: HasManyAddAssociationMixin<SupplyCategory, number>;
+  addSupplyCategories: HasManyAddAssociationsMixin<SupplyCategory, number>;
+}
 
 export class Tender extends Model<TenderModel, TenderAttributes> {}
 
@@ -37,6 +47,10 @@ export function TenderFactory(sequelize: Sequelize): TenderStatic {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      HeadingImage: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       Buyer_ID: {
         type: DataTypes.INTEGER,

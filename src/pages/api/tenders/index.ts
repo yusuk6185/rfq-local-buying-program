@@ -5,13 +5,13 @@ import moment from 'moment';
 import { Op } from 'sequelize';
 
 import authUserMiddleware from '../../../middlewares/authUserMiddleware';
+import onlyBuyersMiddleware from '../../../middlewares/onlyBuyersMiddleware';
 import { withErrorHandler } from '../../../middlewares/withErrorHandler';
 import {
   Tender,
   TenderAttachment,
   TenderProduct,
 } from '../../../sequelize/models';
-import onlyBuyersMiddleware from '../../../middlewares/onlyBuyersMiddleware';
 
 const handler = nextConnect()
   .use(authUserMiddleware())
@@ -21,6 +21,7 @@ const handler = nextConnect()
         where: {
           ClosingAt: { [Op.gt]: moment.utc() },
         },
+        order: [['ClosingAt', 'ASC']],
         include: [{ all: true, nested: true }],
       });
 
@@ -42,7 +43,6 @@ const handler = nextConnect()
       const {
         TenderAttachments,
         ClosingAt,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         SupplyCategories,
         TenderProducts,
         ...restProps
@@ -56,6 +56,10 @@ const handler = nextConnect()
         ClosingAt: new Date(ClosingAt),
         Buyer_ID,
       });
+
+      if (SupplyCategories?.length) {
+        await tender.addSupplyCategories(SupplyCategories);
+      }
 
       if (TenderProducts?.length) {
         await TenderProduct.bulkCreate(

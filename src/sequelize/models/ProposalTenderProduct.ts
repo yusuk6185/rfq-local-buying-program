@@ -45,8 +45,7 @@ export function ProposalTenderProductFactory(
     },
     {
       freezeTableName: true,
-      createdAt: 'CreatedAt',
-      updatedAt: 'UpdatedAt',
+      timestamps: false,
     },
   );
 }

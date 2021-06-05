@@ -8,13 +8,14 @@ const handler = nextConnect()
   .use(authUserMiddleware())
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-      const tenders = await Supplier.findAll({
+      const suppliers = await Supplier.findAll({
         include: [{ all: true, nested: true }],
+        order: [['CreatedAt', 'DESC']],
       });
 
       return res.status(200).json({
         success: true,
-        items: tenders,
+        items: suppliers,
       });
     } catch (err) {
       return res.status(500).json({

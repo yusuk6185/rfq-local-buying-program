@@ -20,6 +20,7 @@ import { useAuth } from 'contexts/authContext';
 import realRequest from 'utils/realRequest';
 import { toast } from 'react-toastify';
 import getVariantByStatus from 'utils/getVariantByStatus';
+import currencyFormat from 'utils/curencyFormat';
 import MainLayout from '../../layouts/MainLayout';
 
 interface IProps {
@@ -159,7 +160,7 @@ const MyProposalsPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
                           </a>
                         </Link>
                       </td>
-                      <td>{proposal.Offer}</td>
+                      <td>{currencyFormat(proposal.Offer)}</td>
                       <td>{moment(proposal.CreatedAt).format('DD/MM/YYYY')}</td>
                       <td>
                         <Badge variant={`outline-${variantByStatus}`}>

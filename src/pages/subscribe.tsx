@@ -2,11 +2,12 @@ import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { Button, Card, Form, FormProps } from 'react-bootstrap';
 import { useForm, Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
+import { Editor } from '@tinymce/tinymce-react';
 import { motion } from 'framer-motion';
 // eslint-disable-next-line import/no-unresolved
 import { Except } from 'type-fest';
@@ -95,6 +96,7 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
   loading,
   ...props
 }) => {
+  const editorRef = useRef(null);
   const { register, handleSubmit, control } = useForm();
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...props}>
@@ -128,13 +130,6 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
           render={({ field }) => <FormControlFile {...field} />}
         />
       </Form.Group>
-      <FormGroupWithLabelAndControl
-        label="Description"
-        controlProps={{
-          ...register('Description', { required: true }),
-          as: 'textarea',
-        }}
-      />
       <Controller
         name="SupplyCategories"
         control={control}
@@ -178,6 +173,33 @@ const SupplierSubscribeForm: FC<SupplierSubscribeFormProps> = ({
         )}
       />
 
+      <Form.Group>
+        <Form.Label>Can you describe your business?</Form.Label>
+        <Controller
+          name="Description"
+          control={control}
+          render={({ field }) => (
+            <Editor
+              onInit={(evt: any, editor: any) => {
+                editorRef.current = editor;
+              }}
+              value={field.value}
+              onSelectionChange={(_, editor) => {
+                const html = editor.getContent();
+                field.onChange(html);
+              }}
+              init={{
+                zIndex: 0,
+                height: 300,
+                menubar: false,
+                content_style:
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              }}
+            />
+          )}
+        />
+      </Form.Group>
+
       <Button disabled={loading} type="submit">
         Register
       </Button>
@@ -199,6 +221,7 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
   states,
   ...props
 }) => {
+  const editorRef = useRef(null);
   const { register, handleSubmit, control } = useForm();
   return (
     <Form onSubmit={handleSubmit(onSubmit)} {...props}>
@@ -262,6 +285,32 @@ const BuyerSubscribeForm: FC<BuyerSubscribeFormProps> = ({
           />
         )}
       />
+      <Form.Group>
+        <Form.Label>Can you describe your business?</Form.Label>
+        <Controller
+          name="Description"
+          control={control}
+          render={({ field }) => (
+            <Editor
+              onInit={(evt: any, editor: any) => {
+                editorRef.current = editor;
+              }}
+              value={field.value}
+              onSelectionChange={(_, editor) => {
+                const html = editor.getContent();
+                field.onChange(html);
+              }}
+              init={{
+                zIndex: 0,
+                height: 300,
+                menubar: false,
+                content_style:
+                  'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+              }}
+            />
+          )}
+        />
+      </Form.Group>
       <Button disabled={loading} type="submit">
         Register
       </Button>
@@ -291,7 +340,9 @@ const SubscribePage: FC<IProps> = ({
       await createUser({
         ...value,
         Type: type,
-        SupplyCategories: (value.SupplyCategories || []).map(({ ID }) => ID),
+        SupplyCategories: (value.SupplyCategories || []).map(
+          ({ ID }: any) => ID,
+        ),
         State_ID: value.State_ID?.ID,
         City_ID: value.City_ID?.ID,
       });

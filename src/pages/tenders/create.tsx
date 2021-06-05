@@ -87,7 +87,7 @@ const CreateTenderPage: FC<IProps> = ({
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({
+  } = useForm<any>({
     defaultValues: {
       TenderProducts: [{ Name: '', Quantity: 1 }],
     },

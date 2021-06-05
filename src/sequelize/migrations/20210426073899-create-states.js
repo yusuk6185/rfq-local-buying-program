@@ -24,4 +24,5 @@ module.exports = {
       throw e;
     }
   },
+  down: async () => {},
 };

@@ -20,14 +20,17 @@ const handler = nextConnect()
   .post(
     withErrorHandler(async (req: NextApiRequest, res: NextApiResponse) => {
       const { ProposalAttachments, ...restProps } = req.body;
-      const proposal = await Proposal.create(restProps, {
-        include: [
-          {
-            association: ProposalTenderProducts,
-            as: 'categories',
-          },
-        ],
-      });
+      const proposal = await Proposal.create(
+        { ...restProps, Supplier_ID: req.user?.Supplier_ID },
+        {
+          include: [
+            {
+              association: ProposalTenderProducts,
+              as: 'categories',
+            },
+          ],
+        },
+      );
       if (ProposalAttachments !== undefined && ProposalAttachments.length > 0) {
         try {
           await Promise.all(

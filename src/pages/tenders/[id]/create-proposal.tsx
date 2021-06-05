@@ -180,14 +180,17 @@ const CreateProposalPage: FC<IProps> = ({
                     {tender.TenderProducts?.map((tenderProduct, index) => (
                       <Form.Group key={tenderProduct.ID}>
                         <Card body>
-                          <Row className="align-items-center justify-content-between">
+                          <Row className="align-items-center justify-content-between flex-nowrap">
                             <Col xs="auto">
-                              <h3 className="m-0">{tenderProduct.Name}</h3>
+                              <h3 className="m-0">
+                                {tenderProduct.Name} x {tenderProduct.Quantity}
+                              </h3>
                             </Col>
                             <Col xs="auto">
                               <Form.Label>Your Price</Form.Label>
                               <Form.Control
                                 type="number"
+                                step=".01"
                                 {...register(
                                   `ProposalTenderProducts.${index}.Offer`,
                                   {

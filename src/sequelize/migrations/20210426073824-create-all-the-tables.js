@@ -62,6 +62,10 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
           },
+          Description: {
+            type: Sequelize.TEXT,
+            allowNull: true,
+          },
           ABN: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -145,6 +149,10 @@ module.exports = {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
+          },
+          Description: {
+            type: Sequelize.TEXT,
+            allowNull: true,
           },
           Name: {
             type: Sequelize.STRING,
@@ -304,7 +312,7 @@ module.exports = {
           },
           Supplier_ID: {
             type: Sequelize.INTEGER,
-            allowNull: true,
+            allowNull: false,
             references: {
               model: 'Supplier',
               key: 'ID',
@@ -477,10 +485,26 @@ module.exports = {
         },
         { transaction },
       );
-      return await queryInterface.createTable(
+      await queryInterface.createTable(
         'Supplier_SupplyCategory',
         {
           Supplier_ID: {
+            allowNull: false,
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+          },
+          SupplyCategory_ID: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+          },
+        },
+        { transaction },
+      );
+      return await queryInterface.createTable(
+        'Tender_SupplyCategory',
+        {
+          Tender_ID: {
             allowNull: false,
             type: Sequelize.INTEGER,
             primaryKey: true,

@@ -21,15 +21,5 @@ module.exports = {
     });
   },
 
-  down: async queryInterface => {
-    try {
-      return Promise.all([
-        queryInterface.removeColumn('TenderAttachment', 'URL'),
-        queryInterface.removeColumn('TenderAttachment', 'Tender_ID'),
-      ]);
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  },
+  down: async () => {},
 };

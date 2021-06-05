@@ -2,15 +2,17 @@ import { GetStaticProps } from 'next';
 import ErrorPage from 'next/error';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { FC, useState } from 'react';
+import { Badge, Button, Card, Col, Row } from 'react-bootstrap';
 
 import { motion } from 'framer-motion';
 import moment from 'moment';
+import currencyFormat from 'utils/curencyFormat';
 import realRequest from 'utils/realRequest';
 import renderCommonMetaTags from 'utils/renderCommonMetaTags';
 
 import SectionWithContainer from 'components/SectionWithContainer/SectionWithContainer';
+import { useAuth } from 'contexts/authContext';
 import { IProposal } from 'models/IProposal';
 
 import MainLayout from '../../layouts/MainLayout';
@@ -56,13 +58,28 @@ const ProposalDetailPage: FC<IProps> = ({
   statusCode = null,
   host = '',
 }) => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { user } = useAuth();
   if (router.isFallback) {
     return <h2>...Loading</h2>;
   }
   if (statusCode || !proposal) {
     return <ErrorPage statusCode={statusCode || 400} />;
   }
+
+  const handleChooseTheProposal = async () => {
+    setLoading(true);
+    try {
+      await realRequest.put(`/api/proposals/${proposal.ID}`, {
+        ApprovedAt: moment().utc().toISOString(),
+      });
+      router.back();
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -91,9 +108,9 @@ const ProposalDetailPage: FC<IProps> = ({
               <span>
                 {moment(proposal.Tender?.ClosingAt).format('DD/MM/YYYY')}
               </span>
-              <Row className="justify-content-between">
+              <Row className="justify-content-between align-items-center">
                 <Col md="auto">
-                  <Row>
+                  <Row className="align-items-center">
                     <Col md="auto">
                       <img
                         className="img-thumbnail"
@@ -106,7 +123,17 @@ const ProposalDetailPage: FC<IProps> = ({
                       <strong className="d-block">
                         {proposal.Supplier?.Name}
                       </strong>
-                      <span className="text-success">{proposal.Offer}</span>
+                      <ul className="pl-0 list-style-type-none">
+                        {(proposal?.Supplier?.SupplyCategories || []).map(
+                          supplyCategory => (
+                            <li key={supplyCategory.ID} md="auto">
+                              <Badge variant="primary">
+                                <p className="m-0 p-1">{supplyCategory.Name}</p>
+                              </Badge>
+                            </li>
+                          ),
+                        )}
+                      </ul>
                     </Col>
                   </Row>
                 </Col>
@@ -127,40 +154,66 @@ const ProposalDetailPage: FC<IProps> = ({
                         Contact the local business
                       </Button>
                     </Col>
-                    <Col md="auto">
-                      <Button size="sm" variant="success">
-                        Choose the company
-                      </Button>
-                    </Col>
+                    {user?.Buyer_ID === proposal?.Tender?.Buyer_ID &&
+                      !proposal.ApprovedAt && (
+                        <Col md="auto">
+                          <Button
+                            disabled={loading}
+                            onClick={handleChooseTheProposal}
+                            size="sm"
+                            variant="outline-success"
+                          >
+                            Choose the Proposal
+                          </Button>
+                        </Col>
+                      )}
+                    {proposal.ApprovedAt && (
+                      <Col md="auto">
+                        <Badge variant="success" pill>
+                          <p className="m-0 p-2 font-weight-bold">Approved</p>
+                        </Badge>
+                      </Col>
+                    )}
                   </Row>
                 </Col>
               </Row>
             </div>
-          </SectionWithContainer>
-          <SectionWithContainer>
-            <h2>Description</h2>
-            <div dangerouslySetInnerHTML={{ __html: proposal.Description }} />
-            <ul className="pl-0">
-              {(proposal.ProposalTenderProducts || []).map(
-                proposalTenderProduct => (
-                  <li key={proposalTenderProduct.ID} className="mb-3">
-                    <Card body>
-                      <Row className="align-items-center justify-content-between">
-                        <Col>
-                          <h3 className="m-0">
-                            {proposalTenderProduct.TenderProduct?.Name}
-                          </h3>
-                        </Col>
-                        <Col md="auto">
-                          <strong className="mr-2">Offer:</strong>
-                          <span>{proposalTenderProduct.Offer}</span>
-                        </Col>
-                      </Row>
-                    </Card>
-                  </li>
-                ),
-              )}
-            </ul>
+            <Row className="pt-5 mb-n3">
+              <Col md={6} className="mb-3">
+                <h4 className="font-weight-bold mb-3">Description</h4>
+                <div
+                  dangerouslySetInnerHTML={{ __html: proposal.Description }}
+                />
+              </Col>
+              <Col md={6} className="mb-3">
+                <Card body>
+                  <h5 className="font-weight-bold mb-3">Required products</h5>
+                  <ul className="pl-0 list-style-type-none mb-n3">
+                    {(proposal.ProposalTenderProducts || []).map(
+                      proposalTenderProduct => (
+                        <li key={proposalTenderProduct.ID} className="mb-3">
+                          <Card body>
+                            <Row className="align-items-center justify-content-between">
+                              <Col>
+                                <h3 className="m-0">
+                                  {proposalTenderProduct.TenderProduct?.Name}
+                                </h3>
+                              </Col>
+                              <Col md="auto">
+                                <strong className="mr-2">Offer:</strong>
+                                <span>
+                                  {currencyFormat(proposalTenderProduct.Offer)}
+                                </span>
+                              </Col>
+                            </Row>
+                          </Card>
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                </Card>
+              </Col>
+            </Row>
           </SectionWithContainer>
         </motion.div>
       </MainLayout>

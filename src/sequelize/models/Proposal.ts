@@ -1,9 +1,14 @@
 import { BuildOptions, DataTypes, Model, Sequelize } from 'sequelize';
 
+import { SupplierAttributes } from './Supplier';
+import type { TenderAttributes } from './Tender';
+
 export interface ProposalAttributes {
   ID: number;
   Tender_ID?: number;
+  Tender?: TenderAttributes;
   Supplier_ID?: number;
+  Supplier?: SupplierAttributes;
   Description: string;
   ApprovedAt?: Date;
   Offer?: number;

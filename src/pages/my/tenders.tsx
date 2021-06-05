@@ -16,6 +16,7 @@ import TenderDetailCard from 'components/TenderDetailCard/TenderDetailCard';
 import { useAuth } from 'contexts/authContext';
 import { ITender } from 'models/ITender';
 
+import ListLoader from 'components/ListLoader/ListLoader';
 import MainLayout from '../../layouts/MainLayout';
 
 interface IProps {
@@ -31,6 +32,7 @@ enum TenderState {
 
 const TendersPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [tenderFilter, setTenderFilter] = useState<TenderState>();
   const [tenders, setTenders] = useState<ITender[]>([]);
 
@@ -38,6 +40,7 @@ const TendersPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
     (async () => {
       try {
         if (user?.Buyer_ID) {
+          setLoading(true);
           const {
             data: { items: responseTenders },
           } = await realRequest(`/api/my/tenders`);
@@ -46,6 +49,7 @@ const TendersPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
       } catch {
         toast.error('There was an error.');
       }
+      setLoading(false);
     })();
   }, [user]);
 
@@ -136,19 +140,23 @@ const TendersPage: FC<IProps> = ({ statusCode = null, host = '' }) => {
               </Col>
             </Row>
             <Row>
-              {filteredTender.map((tender: ITender) => (
-                <Col key={tender.ID} sm={6} md={4} lg={3} className="mb-3">
-                  <Link href={`/tenders/${tender.ID}`} passHref>
-                    <Button
-                      variant="link"
-                      className="p-0 text-dark text-left radius-0 d-block"
-                      as="a"
-                    >
-                      <TenderDetailCard tender={tender} />
-                    </Button>
-                  </Link>
-                </Col>
-              ))}
+              {loading ? (
+                <ListLoader />
+              ) : (
+                filteredTender.map((tender: ITender) => (
+                  <Col key={tender.ID} sm={6} md={4} lg={3} className="mb-3">
+                    <Link href={`/tenders/${tender.ID}`} passHref>
+                      <Button
+                        variant="link"
+                        className="p-0 text-dark text-left radius-0 d-block"
+                        as="a"
+                      >
+                        <TenderDetailCard tender={tender} />
+                      </Button>
+                    </Link>
+                  </Col>
+                ))
+              )}
             </Row>
           </SectionWithContainer>
         </motion.div>

@@ -4,7 +4,15 @@ import nextConnect from 'next-connect';
 import authUserMiddleware from '../../../middlewares/authUserMiddleware';
 import onlySuppliersMiddleware from '../../../middlewares/onlySuppliersMiddleware';
 import { withErrorHandler } from '../../../middlewares/withErrorHandler';
-import { Proposal } from '../../../sequelize/models';
+import {
+  Buyer,
+  Proposal,
+  ProposalAttachment,
+  ProposalTenderProduct,
+  Supplier,
+  Tender,
+  TenderProduct,
+} from '../../../sequelize/models';
 
 const handler = nextConnect()
   .use(authUserMiddleware())
@@ -15,7 +23,26 @@ const handler = nextConnect()
         where: {
           Supplier_ID: req.user!.Supplier_ID,
         },
-        include: [{ all: true, nested: true }],
+        include: [
+          {
+            model: Tender,
+            as: 'Tender',
+            include: [{ model: Buyer, as: 'Buyer' }],
+          },
+          { model: Supplier, as: 'Supplier' },
+          { model: ProposalAttachment, as: 'ProposalAttachments' },
+          {
+            model: ProposalTenderProduct,
+            as: 'ProposalTenderProducts',
+            nested: true,
+            include: [
+              {
+                model: TenderProduct,
+                as: 'TenderProduct',
+              },
+            ],
+          },
+        ],
       });
       return res.status(200).json({
         success: false,

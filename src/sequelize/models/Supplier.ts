@@ -6,14 +6,16 @@ import {
   Model,
   Sequelize,
 } from 'sequelize';
-import { UserAttributes } from './User';
+
 import { SupplyCategory } from './SupplyCategory';
+import { UserAttributes } from './User';
 
 export interface SupplierAttributes {
   ID?: number;
   Name: string;
   ABN: string;
   Logo: string;
+  // Description?: string;
   State_ID?: number;
   City_ID?: number;
   CreatedAt?: Date;
@@ -51,6 +53,10 @@ export function SupplierFactory(sequelize: Sequelize): SupplierStatic {
       ABN: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      Description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
       Logo: {
         type: DataTypes.STRING,
