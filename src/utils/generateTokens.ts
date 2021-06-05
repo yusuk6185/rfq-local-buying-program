@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 const generateTokens = (user: any) => {
   const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET || '', {
-    expiresIn: 86400,
+    expiresIn: 31557600000,
   });
   const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET || '');
 
