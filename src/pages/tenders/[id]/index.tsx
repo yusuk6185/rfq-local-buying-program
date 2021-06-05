@@ -137,7 +137,9 @@ const TenderDetailPage: FC<IProps> = ({
                 </Col>
               ))}
             </Row>
-            {tender?.Description && <div dangerouslySetInnerHTML={{__html: tender?.Description}}/>}
+            {tender?.Description && (
+              <div dangerouslySetInnerHTML={{ __html: tender?.Description }} />
+            )}
           </Col>
           <Col md={6}>
             <Card body>

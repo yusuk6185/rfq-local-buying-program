@@ -126,7 +126,7 @@ const ProposalDetailPage: FC<IProps> = ({
                       <ul className="pl-0 list-style-type-none">
                         {(proposal?.Supplier?.SupplyCategories || []).map(
                           supplyCategory => (
-                            <li key={supplyCategory.ID} md="auto">
+                            <li key={supplyCategory.ID}>
                               <Badge variant="primary">
                                 <p className="m-0 p-1">{supplyCategory.Name}</p>
                               </Badge>
