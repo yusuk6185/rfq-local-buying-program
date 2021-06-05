@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const {
       data: { items: tenders },
     } = await realRequest.get<{ items: ITender[] }>(
-      'http://localhost:3000/api/tenders',
+      '/api/tenders',
     );
     return {
       props: {

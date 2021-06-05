@@ -29,7 +29,7 @@ export const getStaticPaths = async () => {
   const {
     data: { items: tenders },
   } = await realRequest.get<{ items: ITender[] }>(
-    'http://localhost:3000/api/tenders',
+    '/api/tenders',
   );
   return {
     paths: tenders.map(tender => ({

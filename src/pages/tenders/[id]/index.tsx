@@ -43,9 +43,7 @@ interface IProps {
 export const getStaticPaths = async () => {
   const {
     data: { items: tenders },
-  } = await realRequest.get<{ items: ITender[] }>(
-    'http://localhost:3000/api/tenders',
-  );
+  } = await realRequest.get<{ items: ITender[] }>('/api/tenders');
   return {
     paths: tenders.map(tender => ({
       params: { id: tender.ID.toString() },
@@ -59,7 +57,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const {
       data: { data: tender },
     } = await realRequest.get<{ data: ITender[] }>(
-      `http://localhost:3000/api/tenders/${params?.id || '0'}`,
+      `/api/tenders/${params?.id || '0'}`,
     );
     return {
       props: {
@@ -86,7 +84,7 @@ const TenderDetailPage: FC<IProps> = ({
   const { query, isFallback } = useRouter();
   const { user } = useAuth();
 
-  const [tender, setTender] = useState<ITender>(initialTender);
+  const [tender, setTender] = useState<ITender | undefined>(initialTender);
 
   const description = useMemo(
     () => (
@@ -94,7 +92,7 @@ const TenderDetailPage: FC<IProps> = ({
         <Row className="justify-content-between mb-3">
           <Col className="flex-grow-0">
             <h4 className="font-weight-bold">
-              <FaMapPin /> {tender.City?.Name}, {tender.State?.Name}
+              <FaMapPin /> {tender?.City?.Name}, {tender?.State?.Name}
             </h4>
           </Col>
           <Col md="auto">
@@ -104,13 +102,13 @@ const TenderDetailPage: FC<IProps> = ({
                   Attachments
                 </Button>
               </Col>
-              {tender.Buyer?.User?.Email && (
+              {tender?.Buyer?.User?.Email && (
                 <Col md="auto">
                   <Button
                     size="sm"
                     variant="outline-primary"
                     as="a"
-                    href={`mailto:${tender.Buyer.User.Email}`}
+                    href={`mailto:${tender?.Buyer.User.Email}`}
                   >
                     Contact the company
                   </Button>
@@ -131,7 +129,7 @@ const TenderDetailPage: FC<IProps> = ({
         <Row>
           <Col md={6}>
             <Row className="mb-2">
-              {(tender.SupplyCategories || [])?.map(supplyCategory => (
+              {(tender?.SupplyCategories || [])?.map(supplyCategory => (
                 <Col key={supplyCategory.ID} md="auto">
                   <Badge variant="primary">
                     <p className="m-0 p-2">{supplyCategory.Name}</p>
@@ -139,13 +137,13 @@ const TenderDetailPage: FC<IProps> = ({
                 </Col>
               ))}
             </Row>
-            <div dangerouslySetInnerHTML={{ __html: tender.Description }} />
+            {tender?.Description && <div dangerouslySetInnerHTML={{__html: tender?.Description}}/>}
           </Col>
           <Col md={6}>
             <Card body>
               <h4 className="mb-3 font-weight-bold">Products Required</h4>
               <ul className="list-style-type-none pl-0 mb-n3">
-                {(tender.TenderProducts || []).map(tenderProduct => (
+                {(tender?.TenderProducts || []).map(tenderProduct => (
                   <li key={tenderProduct.ID} className="mb-3">
                     <Card body>
                       <Row className="align-items-center justify-content-between">
@@ -166,7 +164,7 @@ const TenderDetailPage: FC<IProps> = ({
         </Row>
       </div>
     ),
-    [tender.Description, tender.TenderProducts],
+    [tender],
   );
 
   useEffect(() => {
@@ -188,8 +186,8 @@ const TenderDetailPage: FC<IProps> = ({
     return <h2>...Loading</h2>;
   }
 
-  if (statusCode) {
-    return <ErrorPage statusCode={statusCode} />;
+  if (statusCode || !tender) {
+    return <ErrorPage statusCode={statusCode || 404} />;
   }
 
   return (
