@@ -15,21 +15,13 @@ skills and knowledge that were acquired during the Master of Information Technol
 degree. 
 
 ### Application Structure and Framework
-The application has two parts, a front-end side and a back-end side. The front-end side
+The application has two parts, **front-end side** and **back-end side**. The front-end side
 consists of web pages, which allow users to interact with the application visually. The
 back-end side contains APIs and server services to handle front-end requests and database
-queries.
-To develop the application, NextJS was used as the core framework to develop both the
-client-side and server-side. NextJS is a ReactJS framework that provides server functions and
-supports the use of TypeScript. The use of this framework was not included in the units
-managed in the Master of Information Technology. However, the knowledge from IFN666,
-Web and Mobile Application Development, covered the fundamentals of web development
-and the basic use of ReactJS. The skills learned within the course included a few projects that
-were to be completed in ReactJS. Assisted with these skills, the framework is effectively
-adopted to develop the application.
-Other libraries and frameworks such as React-Bootstrap were used for the visual design
-components in the web pages, and Sequelize was used as the ORM (Object Relational
-Mapping) framework to query data. The database of the application uses PostgreSQL.
+queries. To develop the application, **NextJS was used as the core framework** to develop both the
+client-side and server-side. Other libraries and frameworks such as **React-Bootstrap** were used for the visual design
+components in the web pages, and **Sequelize** was used as the ORM (Object Relational
+Mapping) framework to query data. The database of the application uses **PostgreSQL**.
 
 ## Site Map
 ![image of site map](https://user-images.githubusercontent.com/35501963/135054475-83a140c9-168e-47b4-ab35-bc6f3ff509d5.png)
