@@ -3,13 +3,13 @@
 > <br/>
 > Project Period - March 2021 to June 2021.
 
-## Overview
-![image of home page](https://user-images.githubusercontent.com/35501963/135051674-6cd2cc2e-1318-4503-8e67-bf630e9f5456.png)
-
 ## Prerequisites
 
 - [nodejs](https://nodejs.org/en/)
 - [docker](https://www.docker.com/)
+
+## Overview
+![image of home page](https://user-images.githubusercontent.com/35501963/135051674-6cd2cc2e-1318-4503-8e67-bf630e9f5456.png)
 
 ## Local Environment
 
