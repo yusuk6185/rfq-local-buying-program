@@ -21,8 +21,7 @@ shared pages, and yellow points are the corresponding APIs. The routes of pages 
 included in the pictures.
 
 ### User API
-![image of user api](https://user-images.githubusercontent.com/35501963/135068676-be3f9488-4093-4f0c-ba43-fed9e5ca8c79.png)
-
+![image](https://user-images.githubusercontent.com/35501963/135069576-2c948479-1bbd-470e-8769-fdaf7afab68f.png)
 ### Supplier API
 ![image of supplier api](https://user-images.githubusercontent.com/35501963/135068735-9a9b0436-a11d-41ef-ac18-cba49f8fb87b.png)
 
