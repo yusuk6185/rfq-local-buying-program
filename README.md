@@ -1,4 +1,4 @@
-# Request for Quote web service for Local Buying Program
+# Request for Quote Web Service for Local Buying Program
 > Web Application for Tender and Proposals Management
 
 ## Overview
