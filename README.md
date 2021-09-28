@@ -1,5 +1,5 @@
 # Request for Quote Web Service for Local Buying Program
-> Web Application for Tender and Proposals Management
+> Web application for tender and proposals management developed by Queensland University of Technology IFN 711 Group 5 through March to June, 2021.
 
 ## Overview
 ![image](https://user-images.githubusercontent.com/35501963/135051674-6cd2cc2e-1318-4503-8e67-bf630e9f5456.png)
