@@ -20,14 +20,14 @@ Same as the site map above, the **colour of points represents the roles** of the
 shared pages, and yellow points are the corresponding APIs. The routes of pages are also
 included in the pictures.
 
-### User API
-![image](https://user-images.githubusercontent.com/35501963/135069740-9d610533-7797-4bb2-8e07-1328b3c45243.png)
+#### User API
+![image of user api](https://user-images.githubusercontent.com/35501963/135069740-9d610533-7797-4bb2-8e07-1328b3c45243.png)
 
-### Supplier API
-![image of supplier api](https://user-images.githubusercontent.com/35501963/135068735-9a9b0436-a11d-41ef-ac18-cba49f8fb87b.png)
+#### Supplier API
+![image of supplier api](https://user-images.githubusercontent.com/35501963/135069855-e0f120a4-53ae-4d8d-a5c0-b47e48b1b514.png)
 
-### Buyer API
-![image of buyer api](https://user-images.githubusercontent.com/35501963/135068763-d30fa176-8b02-471e-90ac-f1cbd16e35fa.png)
+#### Buyer API
+![image of buyer api](https://user-images.githubusercontent.com/35501963/135069932-f72ebc92-5561-4194-97c2-fd8399250cf7.png)
 
 ## Prerequisites
 
