@@ -13,6 +13,13 @@
 ![image of site map](https://user-images.githubusercontent.com/35501963/135054475-83a140c9-168e-47b4-ab35-bc6f3ff509d5.png)
 
 ## Restful API
+This section shows the **route between pages and APIs**. RESTful API is an interface
+used for client-side functions to communicate with server-side functions. It has several
+benefits such as flexible and concise routing.
+Same as the site map above, the **colour of points represents the roles** of the user or
+shared pages, and yellow points are the corresponding APIs. The routes of pages are also
+included in the pictures.
+
 ### User API
 ![image of user api](https://user-images.githubusercontent.com/35501963/135068676-be3f9488-4093-4f0c-ba43-fed9e5ca8c79.png)
 
