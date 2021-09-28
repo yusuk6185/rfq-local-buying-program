@@ -13,9 +13,14 @@
 ![image](https://user-images.githubusercontent.com/35501963/135054475-83a140c9-168e-47b4-ab35-bc6f3ff509d5.png)
 
 ## Restful API
-This section shows the route between pages and APIs. RESTful API is an interface
-used for client-side functions to communicate with server-side functions. It has several
-benefits such as flexible and concise routing.
+### User API
+![image](https://user-images.githubusercontent.com/35501963/135068676-be3f9488-4093-4f0c-ba43-fed9e5ca8c79.png)
+
+### Supplier API
+![image](https://user-images.githubusercontent.com/35501963/135068735-9a9b0436-a11d-41ef-ac18-cba49f8fb87b.png)
+
+### Buyer API
+![image](https://user-images.githubusercontent.com/35501963/135068763-d30fa176-8b02-471e-90ac-f1cbd16e35fa.png)
 
 ## Prerequisites
 
