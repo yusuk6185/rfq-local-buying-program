@@ -72,8 +72,8 @@ included in the pictures.
 #### Quote Submission Page
 ![image for quote submission page](https://user-images.githubusercontent.com/35501963/135072240-2853a20b-1bfc-470b-bc34-f729ab7577ed.png)
 
-#### Quote Detail Page
-![image for quote detail page](https://user-images.githubusercontent.com/35501963/135072375-722157d5-8f92-4b0d-acb3-4bfc0490e390.png)
+#### Project Detail Page
+![image for project detail page](https://user-images.githubusercontent.com/35501963/135072970-bbd7638a-72d8-4d2e-81c4-6378166b6535.png)
 
 #### My Projects Page
 ![image for my projects page](https://user-images.githubusercontent.com/35501963/135072472-782e5e60-51ac-44f3-803a-c4276e23e1dd.png)
