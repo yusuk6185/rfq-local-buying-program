@@ -3,6 +3,10 @@
 
 ![image](https://user-images.githubusercontent.com/35501963/135051674-6cd2cc2e-1318-4503-8e67-bf630e9f5456.png)
 
+## Motivation
+Large scale buyers should be able to post their sourcing needs to the web portal requesting a quote from the small local businesses. An RFT
+system is not present in the current web portal. Therefore sourcing supply and matching buyers require manual input. An online RFT system will free up LBP employees, allow for
+quicker response times and broader partner matching, resulting in more competitive tender prices.
 
 ## Prerequisites
 
